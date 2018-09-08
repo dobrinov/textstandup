@@ -1,0 +1,54 @@
+.row.justify-content-xl-center.mb-3
+  .col-xl-6.mb-3
+    h1.mb-3 Morning report
+
+    .list-group.report
+      .list-group-item.report-title
+        h2 = @report.previous_date_report.date.strftime '%A'
+        small = @report.previous_date_report.date.strftime '%d.%m.%Y'
+
+      = render 'tasks', heading: 'What did you deliver?',
+                        name: :delivered,
+                        report: @report.previous_date_report,
+                        collection: @report.previous_date_report.delivered,
+                        tab: @tab,
+                        render_form: @render_form,
+                        edit_item_id: @edit_item_id
+
+      = render 'tasks', heading: 'What did you work on?',
+                        name: :in_progress,
+                        report: @report.previous_date_report,
+                        collection: @report.previous_date_report.in_progress,
+                        tab: @tab,
+                        render_form: @render_form,
+                        edit_item_id: @edit_item_id
+
+    - @report.current_date_report.tap do |report|
+      .list-group.report
+        .list-group-item.report-title
+          h2 = report.date.strftime '%A'
+          small = report.date.strftime '%d.%m.%Y'
+
+        = render 'tasks', heading: 'What is your plan for the day?',
+                          name: :planned,
+                          report: report,
+                          collection: report.planned,
+                          tab: @tab,
+                          render_form: @render_form,
+                          edit_item_id: @edit_item_id
+
+        = render 'blockers', report: report,
+                             collection: report.blockers,
+                             tab: @tab,
+                             render_form: @render_form,
+                             edit_item_id: @edit_item_id
+
+
+        = render 'announcements', report: report,
+                                  collection: report.announcements,
+                                  tab: @tab,
+                                  render_form: @render_form,
+                                  edit_item_id: @edit_item_id
+
+    .text-center
+      = link_to 'Done', morning_report_path, class: 'btn btn-lg btn-outline-primary mb-3'

@@ -1,0 +1,36 @@
+h1 #{@calendar.month_name}, #{@calendar.year}
+
+- if morning_report_missing?
+  .alert.alert-info
+    h5 Today's morning report
+    p You haven't left a morning report today. Would you like to do this now?
+
+    = link_to 'Yes', edit_morning_report_path, class: 'btn btn-primary'
+    =< link_to 'No', '#', class: 'btn btn-text', data: {dismiss: 'alert'}
+
+.calendar.mb-3
+  ul.calendar-heading
+    - @calendar.days_of_week.each do |day_of_week|
+      li = day_of_week
+
+  - @calendar.weeks.each do |week|
+    ul.calendar-week
+      - week.each do |day|
+        - if day.enabled?
+          li.calendar-day class="#{'today' if day.today?}"
+            - if day.daily_report.present?
+              = link_to daily_report_path(day.daily_report) do
+                span = day.number
+                = icon 'fas', 'check'
+                = icon 'fas', 'eye'
+
+            - else
+              = link_to new_daily_report_path(date: day.date) do
+                span = day.number
+                = icon 'fas', 'exclamation' if day.overdue?
+                = icon 'fas', 'plus'
+
+        - else
+          li.calendar-day.calendar-day-disabled
+            = link_to '#' do
+              div = day.number

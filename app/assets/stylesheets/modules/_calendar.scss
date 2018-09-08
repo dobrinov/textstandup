@@ -1,0 +1,129 @@
+.calendar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.calendar-heading {
+  position: relative;
+  display: block;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 10px;
+    -webkit-flex: 1;  /* Safari 6.1+ */
+    -ms-flex: 1;  /* IE 10 */
+    flex: 1;
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    border: 1px solid #efefef;
+    overflow: hidden;
+    font-weight: bold;
+    color: #aaaaaa;
+  }
+}
+
+.calendar-week {
+  position: relative;
+  display: block;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calendar-day {
+  -webkit-flex: 1;  /* Safari 6.1+ */
+  -ms-flex: 1;  /* IE 10 */
+  flex: 1;
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid #efefef;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+
+  &.today {
+    background-color: #fffce2;
+  }
+
+  strong {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid #fe8081;
+  }
+
+  a {
+    color: #333333;
+    display: block;
+    padding: 10px;
+    min-height: 90px;
+
+    &:hover {
+      background-color: #efefef;
+      text-decoration: none;
+      i.fa-plus, .fa-pencil-alt, i.fa-list-ul, i.fa-exclamation, i.fa-eye { display: block; }
+      i.fa-check { display: none; }
+    }
+  }
+
+  i {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -20px;
+    margin-top: -20px;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    border-radius: 20px;
+  }
+
+  i.fa-plus, i.fa-list-ul, i.fa-pencil-alt, i.fa-eye {
+    color: #ffffff;
+    background-color: #333333;
+    display: none;
+  }
+
+  i.fa-check {
+    color: #ffffff;
+    background-color: #28a745;
+    display: block;
+  }
+
+  i.fa-exclamation {
+    color: #ffffff;
+    background-color: #dc3545;
+    display: block;
+  }
+}
+
+.calendar-day-disabled {
+  font-weight: normal;
+
+  a {
+    color: #cfcfcf;
+    cursor: default;
+
+    &:hover {
+      color: #cfcfcf;
+      background-color: #ffffff;
+      text-decoration: none;
+    }
+  }
+}

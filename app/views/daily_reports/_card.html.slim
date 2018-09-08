@@ -1,0 +1,69 @@
+.list-group.report
+  .list-group-item.report-title
+    h2 = daily_report.weekday_name
+    small = daily_report.date.strftime '%d.%m.%Y'
+
+  .list-group-item.report-section
+    h3 Planned
+
+    - if daily_report.tasks.planned.any?
+      ol
+        - daily_report.tasks.planned.each do |task|
+          li
+            h4 = task.title
+            p = task.summary
+
+    - else
+      .empty Nothing
+
+  .list-group-item.report-section
+    h3 In progress
+
+    - if daily_report.tasks.in_progress.any?
+      ol
+        - daily_report.tasks.in_progress.each do |task|
+          li
+            h4 = task.title
+            p = task.summary
+
+    - else
+      .empty Nothing
+
+  .list-group-item.report-section
+    h3 Delivered
+
+    - if daily_report.tasks.delivered.any?
+      ol
+        - daily_report.tasks.delivered.each do |task|
+          li
+            h4 = task.title
+            p = task.summary
+
+    - else
+      .empty Nothing
+
+  .list-group-item.report-section
+    h3 Blockers
+
+    - if daily_report.blockers.any?
+      ol
+        - daily_report.blockers.each do |blocker|
+          li
+            h4 = blocker.title
+            p = blocker.summary
+
+    - else
+      .empty None
+
+  .list-group-item.report-section
+    h3 Announcements
+
+    - if daily_report.announcements.any?
+      ol
+        - daily_report.announcements.each do |announcement|
+          li
+            h4 = announcement.title
+            p = announcement.summary
+
+    - else
+      .empty None

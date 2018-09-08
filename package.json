@@ -1,0 +1,12 @@
+{
+  "name": "text_standup",
+  "private": true,
+  "dependencies": {
+    "backbone": "^1.3.3",
+    "bootstrap": "^4.1.3",
+    "handlebars": "^4.0.12",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.4",
+    "underscore": "^1.9.1"
+  }
+}

@@ -1,0 +1,52 @@
+.row.justify-content-xl-center.mb-3
+  .col-xl-6
+    h1.mb-3 Daily report
+
+    .list-group.report
+      .list-group-item.report-title
+        h2 = @report.date.strftime '%A'
+        small = @report.date.strftime '%d.%m.%Y'
+
+
+      = render 'tasks', heading: 'Planned',
+                        name: :planned,
+                        report: @report,
+                        collection: @report.planned,
+                        tab: @tab,
+                        render_form: @render_form,
+                        edit_item_id: @edit_item_id
+
+
+      = render 'tasks', heading: 'In progress',
+                        name: :in_progress,
+                        report: @report,
+                        collection: @report.in_progress,
+                        tab: @tab,
+                        render_form: @render_form,
+                        edit_item_id: @edit_item_id
+
+
+      = render 'tasks', heading: 'Delivered',
+                        name: :delivered,
+                        report: @report,
+                        collection: @report.delivered,
+                        tab: @tab,
+                        render_form: @render_form,
+                        edit_item_id: @edit_item_id
+
+
+      = render 'blockers', report: @report,
+                           collection: @report.blockers,
+                           tab: @tab,
+                           render_form: @render_form,
+                           edit_item_id: @edit_item_id
+
+
+      = render 'announcements', report: @report,
+                                collection: @report.announcements,
+                                tab: @tab,
+                                render_form: @render_form,
+                                edit_item_id: @edit_item_id
+
+    .text-center
+      = link_to 'Done', daily_report_path(id: @report.id), class: 'btn btn-lg btn-outline-primary mb-3'
