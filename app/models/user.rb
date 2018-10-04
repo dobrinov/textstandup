@@ -16,8 +16,15 @@ class User < ApplicationRecord
 
       return user if user.present?
 
-      create! email: data['email'], password: Devise.friendly_token[0,20]
+      create! email: data['email'],
+              first_name: data['first_name'],
+              last_name: data['last_name'],
+              password: Devise.friendly_token[0,20]
     end
+  end
+
+  def full_name
+    "#{first_name} #{last_name}"
   end
 
   def last_daily_report
