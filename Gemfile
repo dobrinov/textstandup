@@ -3,11 +3,14 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.5.1'
 
+gem 'dotenv-rails'
+
 gem 'active_attr'
 gem 'bootsnap', require: false
 gem 'coffee-rails'
 gem 'devise'
 gem 'font-awesome-sass'
+gem 'omniauth-google-oauth2'
 gem 'rails'
 gem 'pg'
 gem 'puma'

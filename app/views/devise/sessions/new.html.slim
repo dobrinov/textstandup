@@ -5,11 +5,16 @@
       ' or
       = link_to 'create an account', new_user_registration_path
 
-    .list-group.report.mb-1
+    .list-group.report.mb-3
       .list-group-item.report-title
         = simple_form_for resource, as: resource_name, url: session_path(resource_name) do |form|
           = form.input :email, placeholder: 'e.g., john.doe@example.com'
           = form.input :password, as: :password, placeholder: 'e.g., **********'
-          = form.submit 'Log in', class: 'btn btn-primary'
+          = form.submit 'Log in', class: 'btn btn-primary btn-block'
 
+    .text-center.mb-3 or
+
+    = link_to user_google_oauth2_omniauth_authorize_path, class: 'btn btn-google btn-lg btn-block' do
+      = icon 'fab', 'google', class: 'mr-2'
+      span Log in with Google
     / = link_to 'Forgot your password?', new_password_path(resource_name), class: 'btn btn-link'
