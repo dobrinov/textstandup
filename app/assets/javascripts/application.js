@@ -9,4 +9,3 @@
 
 //= require init
 //= require_tree ./views
-//= require_tree ./modules
