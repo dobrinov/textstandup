@@ -1,9 +1,15 @@
 .btn-google {
-  color: #ea4335;
-  border: 1px solid #ea4335;
+  position: relative;
 
-  &:hover {
-    color: #ffffff;
-    background-color: #ea4335;
+  svg {
+    left: 16px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
   }
+
+  color: #757575;
+  box-shadow: 0 0 1px rgba(0,0,0,.12), 0 1px 1px rgba(0,0,0,.24);
+
+  &:hover { background-color: #eeeeee; }
 }

@@ -18,5 +18,5 @@
     .text-center.mb-3 or
 
     = link_to user_google_oauth2_omniauth_authorize_path, class: 'btn btn-google btn-lg btn-block' do
-      = icon 'fab', 'google', class: 'mr-2'
+      = render 'shared/google'
       span Sign up with Google
