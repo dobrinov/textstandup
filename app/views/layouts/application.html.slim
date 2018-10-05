@@ -16,9 +16,10 @@ html
         span.navbar-toggler-icon
 
       .collapse.navbar-collapse#navigation
-        ul.navbar-nav.mr-auto
-          li.nav-item
-            = link_to 'Calendar', calendar_path, class: 'nav-link'
+        - if user_signed_in?
+          ul.navbar-nav.mr-auto
+            li.nav-item
+              = link_to 'Calendar', calendar_path, class: 'nav-link'
 
 
         ul.navbar-nav.ml-auto
