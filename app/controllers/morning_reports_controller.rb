@@ -1,4 +1,7 @@
 class MorningReportsController < ApplicationController
+  def index
+  end
+
   def show
     @report = build_morning_report
   end

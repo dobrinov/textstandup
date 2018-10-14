@@ -4,6 +4,8 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:google_oauth2]
 
   has_many :daily_reports
+  has_and_belongs_to_many :teams, join_table: 'members_teams', foreign_key: 'member_id'
+  has_and_belongs_to_many :administrated_teams, join_table: 'admins_teams', foreign_key: 'admin_id'
 
   class << self
     def todays_update
@@ -25,6 +27,10 @@ class User < ApplicationRecord
 
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def initials
+    "#{first_name[0]}#{last_name[0]}"
   end
 
   def last_daily_report

@@ -1,0 +1,30 @@
+.row.justify-content-xl-center.mb-3
+  .col-xl-6.mb-3
+    .row
+      - if @teams.any?
+        - @teams.each do |team|
+          .col-md-12
+            .card.mb-3
+              .card-body
+                h5.card-title = team.name
+                - team.members.each do |member|
+                  .avatar title="#{member.full_name}" data-toggle="tooltip" data-placement="top" = member.initials
+
+                / = link_to '#', class: 'avatar avatar-new', title: 'Invite to team', data: {toggle: 'tooltip', placement: 'top'} do
+                /   = icon 'fas', 'plus'
+
+                / div
+                /   = simple_form_for [team, @invite], url: team_invites_path(team) do |form|
+                /     = form.input :email
+
+                div.mt-3
+                  = link_to "Today's reports", team_morning_reports_path(team), class: 'btn btn-outline-secondary'
+                  =< link_to team_path(team), method: :delete, title: 'Delete', data: {toggle: 'tooltip', placement: 'top'}, class: 'btn btn-outline-danger' do
+                    = icon 'far', 'trash-alt'
+
+      - else
+        .col
+          p You are not a member of any teams
+
+      .col-md-12.mt-3
+        = link_to 'Add new', new_team_path, class: 'btn btn-outline-secondary btn-block btn-lg'

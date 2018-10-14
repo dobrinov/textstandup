@@ -1,0 +1,31 @@
+.avatar {
+  width: 2.7rem;
+  height: 2.7rem;
+  line-height: 2.5rem;
+  text-align: center;
+  background-color: #444444;
+  color: #FFFFFF;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.3rem;
+  margin-bottom: 0.3rem;
+  cursor: default;
+
+  &:hover {
+    color: #ffffff;
+    background-color: #333333;
+    text-decoration: none;
+  }
+}
+
+.avatar-new {
+  background-color: #eeeeee;
+  color: #333333;
+  cursor: pointer;
+
+  &:hover {
+    color: #333333;
+    background-color: #dddddd;
+  }
+}

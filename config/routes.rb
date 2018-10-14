@@ -11,5 +11,9 @@ Rails.application.routes.draw do
 
   resource :morning_report, except: %i(create destroy)
 
+  resources :teams, only: %i(index new create destroy) do
+    resources :morning_reports, only: %i(index)
+  end
+
   root to: 'calendars#index'
 end
