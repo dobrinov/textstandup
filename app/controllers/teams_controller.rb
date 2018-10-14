@@ -12,7 +12,7 @@ class TeamsController < ApplicationController
     @team = Team.new team_params
 
     ActiveRecord::Base.transaction do
-      if @team.save && current_user.teams << @team
+      if @team.save && Membership.create!(team: @team, user: current_user, admin: true)
         redirect_to teams_path, notice: 'Team created'
       else
         render :new

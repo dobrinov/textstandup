@@ -4,8 +4,8 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:google_oauth2]
 
   has_many :daily_reports
-  has_and_belongs_to_many :teams, join_table: 'members_teams', foreign_key: 'member_id'
-  has_and_belongs_to_many :administrated_teams, join_table: 'admins_teams', foreign_key: 'admin_id'
+  has_many :memberships
+  has_many :teams, through: :memberships
 
   class << self
     def todays_update
