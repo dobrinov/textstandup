@@ -3,6 +3,7 @@ window.TextStandup =
 
   initialize: ->
     TextStandup.initializeElement(document)
+    TextStandup.Tooltip.initialize(document)
 
   initializeElement: (element) ->
     @initializeViews(element)
