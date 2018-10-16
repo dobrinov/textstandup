@@ -3,4 +3,12 @@ class Team < ApplicationRecord
 
   has_many :memberships
   has_many :members, through: :memberships, source: :user
+
+  def admins
+    members.where memberships: {admin: true}
+  end
+
+  def administrated_by?(user)
+    admins.where(memberships: {user: user}).exists?
+  end
 end
