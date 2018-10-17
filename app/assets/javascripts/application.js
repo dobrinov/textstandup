@@ -1,5 +1,6 @@
 //= require jquery/dist/jquery
 //= require underscore/underscore
+//= require handlebars/dist/handlebars
 //= require backbone/backbone
 //= require popper.js/dist/umd/popper
 //= require rails-ujs

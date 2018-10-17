@@ -150,6 +150,41 @@ ALTER SEQUENCE public.daily_reports_id_seq OWNED BY public.daily_reports.id;
 
 
 --
+-- Name: invitation_links; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.invitation_links (
+    id bigint NOT NULL,
+    team_id bigint NOT NULL,
+    inviting_user_id bigint NOT NULL,
+    invited_user_id bigint,
+    code character varying NOT NULL,
+    used_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: invitation_links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invitation_links_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invitation_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invitation_links_id_seq OWNED BY public.invitation_links.id;
+
+
+--
 -- Name: memberships; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -322,6 +357,13 @@ ALTER TABLE ONLY public.daily_reports ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: invitation_links id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitation_links ALTER COLUMN id SET DEFAULT nextval('public.invitation_links_id_seq'::regclass);
+
+
+--
 -- Name: memberships id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -379,6 +421,14 @@ ALTER TABLE ONLY public.blockers
 
 ALTER TABLE ONLY public.daily_reports
     ADD CONSTRAINT daily_reports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invitation_links invitation_links_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitation_links
+    ADD CONSTRAINT invitation_links_pkey PRIMARY KEY (id);
 
 
 --
@@ -450,10 +500,38 @@ CREATE UNIQUE INDEX index_daily_reports_on_user_id_and_day_and_month_and_year ON
 
 
 --
+-- Name: index_invitation_links_on_invited_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invitation_links_on_invited_user_id ON public.invitation_links USING btree (invited_user_id);
+
+
+--
+-- Name: index_invitation_links_on_inviting_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invitation_links_on_inviting_user_id ON public.invitation_links USING btree (inviting_user_id);
+
+
+--
+-- Name: index_invitation_links_on_team_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invitation_links_on_team_id ON public.invitation_links USING btree (team_id);
+
+
+--
 -- Name: index_memberships_on_team_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_memberships_on_team_id ON public.memberships USING btree (team_id);
+
+
+--
+-- Name: index_memberships_on_team_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_memberships_on_team_id_and_user_id ON public.memberships USING btree (team_id, user_id);
 
 
 --
@@ -506,6 +584,14 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: invitation_links fk_rails_05557c43f2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitation_links
+    ADD CONSTRAINT fk_rails_05557c43f2 FOREIGN KEY (invited_user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: tasks fk_rails_06f523c085; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -514,11 +600,27 @@ ALTER TABLE ONLY public.tasks
 
 
 --
+-- Name: invitation_links fk_rails_1d9faac17d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitation_links
+    ADD CONSTRAINT fk_rails_1d9faac17d FOREIGN KEY (inviting_user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: announcements fk_rails_7c5e3eab4d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.announcements
     ADD CONSTRAINT fk_rails_7c5e3eab4d FOREIGN KEY (daily_report_id) REFERENCES public.daily_reports(id) ON DELETE CASCADE;
+
+
+--
+-- Name: invitation_links fk_rails_8a6e852545; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitation_links
+    ADD CONSTRAINT fk_rails_8a6e852545 FOREIGN KEY (team_id) REFERENCES public.teams(id) ON DELETE CASCADE;
 
 
 --
@@ -567,6 +669,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180828180445'),
 ('20180828204326'),
 ('20181006092141'),
-('20181007195157');
+('20181007195157'),
+('20181016132210');
 
 

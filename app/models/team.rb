@@ -3,6 +3,7 @@ class Team < ApplicationRecord
 
   has_many :memberships
   has_many :members, through: :memberships, source: :user
+  has_many :invitation_links
 
   def admins
     members.where memberships: {admin: true}

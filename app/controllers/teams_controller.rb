@@ -1,7 +1,6 @@
 class TeamsController < ApplicationController
   def index
     @teams = current_user.teams
-    @invite = TeamInvite.new
   end
 
   def new

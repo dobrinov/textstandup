@@ -1,5 +1,9 @@
 .row.justify-content-xl-center.mb-3
-  .col-xl-6.mb-3
+  .col-xl-6
+    .row
+      .col
+        h1 Teams
+
     .row
       - if @teams.any?
         - @teams.each do |team|
@@ -13,18 +17,21 @@
                     - if team.administrated_by?(member)
                       = icon 'fas', 'crown', class: 'crown'
 
-                .popup.js-popup
-                  = link_to '#', class: 'avatar avatar-new js-popup-trigger' do
-                    = icon 'fas', 'user-plus'
+                - if team.administrated_by? current_user
+                  .popup.js-popup
+                    = link_to '#', class: 'avatar avatar-new js-popup-trigger' do
+                      = icon 'fas', 'user-plus'
 
-                  .js-popup-content.popup-content
-                    .popup-title
-                      h3 Invite to team
-                      = link_to '#', class: 'popup-close-btn js-popup-close' do
-                        = icon 'fas', 'times'
+                    .js-popup-content.popup-content
+                      .popup-title
+                        h3 Invite to team
+                        = link_to '#', class: 'popup-close-btn js-popup-close' do
+                          = icon 'fas', 'times'
 
-                    .popup-body
-                      = link_to 'Generate invitation link', '#', class: 'btn btn-primary btn-block'
+                      .popup-body
+                        .js-invitation-link-generator
+                          .js-generated-links
+                          = link_to 'Generate invitation link', team_invitation_links_path(team), class: 'btn btn-primary btn-block js-generation-bnt'
 
                 div.mt-3
                   = link_to "Today's reports", team_morning_reports_path(team), class: 'btn btn-outline-secondary'
