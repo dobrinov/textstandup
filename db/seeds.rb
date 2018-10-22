@@ -11,3 +11,18 @@ Membership.create! user: marge, team: simpsons
 Membership.create! user: bart, team: simpsons
 Membership.create! user: lisa, team: simpsons
 Membership.create! user: maggie, team: simpsons
+
+today = Date.today
+yesterday = Date.yesterday
+yesterday2 = yesterday.yesterday
+
+DailyReport.create! day: today.day, month: today.month, year: today.year, user: homer
+DailyReport.create! day: yesterday2.day, month: yesterday2.month, year: yesterday2.year, user: homer
+DailyReport.create! day: yesterday.day, month: yesterday.month, year: yesterday.year, user: homer
+
+DailyReport.create! day: today.day, month: today.month, year: today.year, user: marge
+DailyReport.create! day: yesterday2.day, month: yesterday2.month, year: yesterday2.year, user: marge
+DailyReport.create! day: yesterday.day, month: yesterday.month, year: yesterday.year, user: marge
+
+DailyReport.create! day: yesterday2.day, month: yesterday2.month, year: yesterday2.year, user: bart
+DailyReport.create! day: yesterday.day, month: yesterday.month, year: yesterday.year, user: bart

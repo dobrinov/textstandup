@@ -1,5 +1,7 @@
 class MorningReportsController < ApplicationController
   def index
+    @team = current_user.teams.find params[:team_id]
+    @team_morning_report = TeamMorningReport.new team: @team, date: Date.today
   end
 
   def show
