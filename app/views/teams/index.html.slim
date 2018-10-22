@@ -10,7 +10,7 @@
           .col-md-12
             .card.mb-3
               .card-body
-                h5.card-title = team.name
+                h5.card-title.mb-3 = team.name
                 - team.members.each do |member|
                   .avatar.js-tooltip title="#{member.full_name}" data-placement="top"
                     span = member.initials
@@ -45,4 +45,4 @@
           p You are not a member of any teams
 
       .col-md-12.mt-3
-        = link_to 'Add new', new_team_path, class: 'btn btn-outline-secondary btn-block btn-lg'
+        = link_to 'Create new team', new_team_path, class: 'btn btn-outline-secondary btn-block btn-lg'
