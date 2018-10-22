@@ -92,6 +92,17 @@
     line-height: 40px;
     font-size: 20px;
     border-radius: 20px;
+
+    @media (max-width: 768px) {
+      top: auto;
+      bottom: 0.5rem;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      border-radius: 15px;
+      margin-left: -15px;
+      margin-top: 0;
+    }
   }
 
   i.fa-plus, i.fa-list-ul, i.fa-pencil-alt, i.fa-eye {
