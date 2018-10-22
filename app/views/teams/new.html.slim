@@ -1,0 +1,10 @@
+.row.justify-content-xl-center.mb-3
+  .col-xl-6
+    h1 New team
+
+    .card
+      .card-body
+        = simple_form_for @team do |form|
+          = form.input :name
+          = form.submit class: 'btn btn-primary'
+          =< link_to 'Cancel', teams_path, class: 'btn btn-outline-secondary'

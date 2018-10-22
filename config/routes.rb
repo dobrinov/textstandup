@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {registrations: 'registrations', omniauth_callbacks: 'users/omniauth_callbacks'}
+  devise_for :users, controllers: {sessions: 'sessions', registrations: 'registrations', omniauth_callbacks: 'users/omniauth_callbacks'}
 
   get '/calendar', to: 'calendars#index'
 
@@ -10,6 +10,13 @@ Rails.application.routes.draw do
   end
 
   resource :morning_report, except: %i(create destroy)
+
+  resources :teams, only: %i(index new create destroy) do
+    resources :morning_reports, only: %i(index)
+    resources :invitation_links, only: %i(show create), param: :code, shallow: true do
+      patch :use, on: :member
+    end
+  end
 
   root to: 'calendars#index'
 end

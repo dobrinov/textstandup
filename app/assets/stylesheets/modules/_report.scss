@@ -43,6 +43,8 @@
     p { margin: 0; padding: 0; line-height: 1.1; }
 
     &:last-child { margin-bottom: 0; }
+
+    &.form { padding: 0 }
   }
 
   .empty { font-style: italic; color: #999999; margin: 0 0 0 0; }

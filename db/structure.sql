@@ -150,6 +150,74 @@ ALTER SEQUENCE public.daily_reports_id_seq OWNED BY public.daily_reports.id;
 
 
 --
+-- Name: invitation_links; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.invitation_links (
+    id bigint NOT NULL,
+    team_id bigint NOT NULL,
+    inviting_user_id bigint NOT NULL,
+    invited_user_id bigint,
+    code character varying NOT NULL,
+    used_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: invitation_links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invitation_links_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invitation_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invitation_links_id_seq OWNED BY public.invitation_links.id;
+
+
+--
+-- Name: memberships; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.memberships (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    team_id bigint NOT NULL,
+    admin boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: memberships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.memberships_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: memberships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.memberships_id_seq OWNED BY public.memberships.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -190,6 +258,37 @@ CREATE SEQUENCE public.tasks_id_seq
 --
 
 ALTER SEQUENCE public.tasks_id_seq OWNED BY public.tasks.id;
+
+
+--
+-- Name: teams; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.teams (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: teams_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.teams_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: teams_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.teams_id_seq OWNED BY public.teams.id;
 
 
 --
@@ -258,10 +357,31 @@ ALTER TABLE ONLY public.daily_reports ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: invitation_links id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitation_links ALTER COLUMN id SET DEFAULT nextval('public.invitation_links_id_seq'::regclass);
+
+
+--
+-- Name: memberships id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.memberships ALTER COLUMN id SET DEFAULT nextval('public.memberships_id_seq'::regclass);
+
+
+--
 -- Name: tasks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tasks ALTER COLUMN id SET DEFAULT nextval('public.tasks_id_seq'::regclass);
+
+
+--
+-- Name: teams id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.teams ALTER COLUMN id SET DEFAULT nextval('public.teams_id_seq'::regclass);
 
 
 --
@@ -304,6 +424,22 @@ ALTER TABLE ONLY public.daily_reports
 
 
 --
+-- Name: invitation_links invitation_links_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitation_links
+    ADD CONSTRAINT invitation_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: memberships memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.memberships
+    ADD CONSTRAINT memberships_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -317,6 +453,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.tasks
     ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: teams teams_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.teams
+    ADD CONSTRAINT teams_pkey PRIMARY KEY (id);
 
 
 --
@@ -353,6 +497,48 @@ CREATE INDEX index_daily_reports_on_user_id ON public.daily_reports USING btree 
 --
 
 CREATE UNIQUE INDEX index_daily_reports_on_user_id_and_day_and_month_and_year ON public.daily_reports USING btree (user_id, day, month, year);
+
+
+--
+-- Name: index_invitation_links_on_invited_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invitation_links_on_invited_user_id ON public.invitation_links USING btree (invited_user_id);
+
+
+--
+-- Name: index_invitation_links_on_inviting_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invitation_links_on_inviting_user_id ON public.invitation_links USING btree (inviting_user_id);
+
+
+--
+-- Name: index_invitation_links_on_team_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invitation_links_on_team_id ON public.invitation_links USING btree (team_id);
+
+
+--
+-- Name: index_memberships_on_team_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_memberships_on_team_id ON public.memberships USING btree (team_id);
+
+
+--
+-- Name: index_memberships_on_team_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_memberships_on_team_id_and_user_id ON public.memberships USING btree (team_id, user_id);
+
+
+--
+-- Name: index_memberships_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_memberships_on_user_id ON public.memberships USING btree (user_id);
 
 
 --
@@ -398,6 +584,14 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: invitation_links fk_rails_05557c43f2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitation_links
+    ADD CONSTRAINT fk_rails_05557c43f2 FOREIGN KEY (invited_user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: tasks fk_rails_06f523c085; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -406,11 +600,43 @@ ALTER TABLE ONLY public.tasks
 
 
 --
+-- Name: invitation_links fk_rails_1d9faac17d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitation_links
+    ADD CONSTRAINT fk_rails_1d9faac17d FOREIGN KEY (inviting_user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: announcements fk_rails_7c5e3eab4d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.announcements
     ADD CONSTRAINT fk_rails_7c5e3eab4d FOREIGN KEY (daily_report_id) REFERENCES public.daily_reports(id) ON DELETE CASCADE;
+
+
+--
+-- Name: invitation_links fk_rails_8a6e852545; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitation_links
+    ADD CONSTRAINT fk_rails_8a6e852545 FOREIGN KEY (team_id) REFERENCES public.teams(id) ON DELETE CASCADE;
+
+
+--
+-- Name: memberships fk_rails_99326fb65d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.memberships
+    ADD CONSTRAINT fk_rails_99326fb65d FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: memberships fk_rails_ae2aedcfaf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.memberships
+    ADD CONSTRAINT fk_rails_ae2aedcfaf FOREIGN KEY (team_id) REFERENCES public.teams(id) ON DELETE CASCADE;
 
 
 --
@@ -441,6 +667,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180828180004'),
 ('20180828180434'),
 ('20180828180445'),
-('20180828204326');
+('20180828204326'),
+('20181006092141'),
+('20181007195157'),
+('20181016132210');
 
 

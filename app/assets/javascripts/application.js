@@ -1,6 +1,6 @@
 //= require jquery/dist/jquery
-//= require handlebars/dist/handlebars
 //= require underscore/underscore
+//= require handlebars/dist/handlebars
 //= require backbone/backbone
 //= require popper.js/dist/umd/popper
 //= require rails-ujs
@@ -9,3 +9,4 @@
 
 //= require init
 //= require_tree ./views
+//= require_tree ./modules

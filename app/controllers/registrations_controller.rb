@@ -1,4 +1,9 @@
 class RegistrationsController < Devise::RegistrationsController
+  def new
+    self.resource = resource_class.new {}
+    store_location_for resource, params[:redirect_to]
+    super
+  end
 
   private
 

@@ -1,0 +1,48 @@
+.row.justify-content-xl-center.mb-3
+  .col-xl-6
+    .row
+      .col
+        h1 Teams
+
+    .row
+      - if @teams.any?
+        - @teams.each do |team|
+          .col-md-12
+            .card.mb-3
+              .card-body
+                h5.card-title = team.name
+                - team.members.each do |member|
+                  .avatar.js-tooltip title="#{member.full_name}" data-placement="top"
+                    span = member.initials
+                    - if team.administrated_by?(member)
+                      = icon 'fas', 'crown', class: 'crown'
+
+                - if team.administrated_by? current_user
+                  .popup.js-popup
+                    = link_to '#', class: 'avatar avatar-new js-popup-trigger' do
+                      = icon 'fas', 'user-plus'
+
+                    .js-popup-content.popup-content
+                      .popup-title
+                        h3 Invite to team
+                        = link_to '#', class: 'popup-close-btn js-popup-close' do
+                          = icon 'fas', 'times'
+
+                      .popup-body
+                        .js-invitation-link-generator
+                          .js-generated-links
+                          = link_to 'Generate invitation link', team_invitation_links_path(team), class: 'btn btn-primary btn-block js-generation-bnt'
+
+                div.mt-3
+                  = link_to "Today's reports", team_morning_reports_path(team), class: 'btn btn-outline-secondary'
+
+                  - if team.administrated_by? current_user
+                    =< link_to team_path(team), method: :delete, title: 'Delete', data: {placement: 'top'}, class: 'btn btn-outline-danger js-tooltip' do
+                      = icon 'far', 'trash-alt'
+
+      - else
+        .col
+          p You are not a member of any teams
+
+      .col-md-12.mt-3
+        = link_to 'Add new', new_team_path, class: 'btn btn-outline-secondary btn-block btn-lg'
