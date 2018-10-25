@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   resource :morning_report, except: %i(create destroy)
 
-  resources :teams, only: %i(index new create destroy) do
+  resources :teams, only: %i(index show new create destroy) do
     resources :morning_reports, only: %i(index)
     resources :invitation_links, only: %i(show create), param: :code, shallow: true do
       patch :use, on: :member

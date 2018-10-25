@@ -9,8 +9,6 @@
   font-size: 1.2rem;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 0.2rem;
-  margin-bottom: 0.2rem;
   cursor: default;
 
   .crown {
@@ -26,22 +24,5 @@
     color: #D2B100;
     font-size: 0.6rem;
     border-radius: 50%;
-  }
-
-  &:hover {
-    color: #ffffff;
-    background-color: #333333;
-    text-decoration: none;
-  }
-}
-
-.avatar-new {
-  background-color: #eeeeee;
-  color: #333333;
-  cursor: pointer;
-
-  &:hover {
-    color: #333333;
-    background-color: #dddddd;
   }
 }

@@ -1,18 +1,29 @@
 class TeamsController < ApplicationController
   def index
+    if current_user.teams.any?
+      redirect_to team_path current_user.teams.first
+    else
+      redirect_to new_team_path
+    end
+  end
+
+  def show
     @teams = current_user.teams
+    @team = @teams.find params[:id]
   end
 
   def new
+    @teams = current_user.teams
     @team = Team.new
   end
 
   def create
+    @teams = current_user.teams
     @team = Team.new team_params
 
     ActiveRecord::Base.transaction do
       if @team.save && Membership.create!(team: @team, user: current_user, admin: true)
-        redirect_to teams_path, notice: 'Team created'
+        redirect_to team_path(@team), notice: 'Team created'
       else
         render :new
       end

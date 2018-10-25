@@ -1,0 +1,49 @@
+h1.mb-3 Teams
+
+ul.nav.nav-tabs.mb-3
+  - @teams.each do |team|
+    li.nav-item
+      = link_to team.name, team_path(team), class: "nav-link #{'active' if team == @team}"
+
+  li.nav-item
+    = link_to new_team_path, class: 'nav-link' do
+      = icon 'fas', 'plus'
+
+table.table.table-no-border-top
+  tbody
+    - @team.members.each do |member|
+      tr
+        td style="width: 5%;"
+          .avatar
+            span = member.initials
+            - if @team.administrated_by?(member)
+              = icon 'fas', 'crown', class: 'crown'
+
+        td style="width: 90%;" = member.full_name
+
+        td style="width: 5%;"
+          - if member == current_user
+            / = link_to 'Leave', '#', class: 'btn btn-outline-danger disabled'
+
+          - elsif @team.administrated_by?(current_user)
+            / = link_to 'Remove', '#', class: 'btn btn-outline-danger'
+
+- if @team.administrated_by? current_user
+  .text-center
+    .popup.js-popup
+      = link_to 'Invite new team member', '#', class: 'btn btn-primary js-popup-trigger'
+
+      .js-popup-content.popup-content
+        .popup-title
+          h3 Invite to team
+          = link_to '#', class: 'popup-close-btn js-popup-close' do
+            = icon 'fas', 'times'
+
+        .popup-body
+          .js-invitation-link-generator
+            .js-generated-links
+            = link_to 'Generate invitation link', team_invitation_links_path(@team), class: 'btn btn-primary btn-block js-generation-bnt'
+
+    - if @team.administrated_by? current_user
+      =< link_to team_path(@team), method: :delete, title: 'Delete team', data: {placement: 'top'}, data: {confirm: 'Are you sure?'}, class: 'btn btn-outline-danger js-tooltip' do
+        = icon 'far', 'trash-alt'
