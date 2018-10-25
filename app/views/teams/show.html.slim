@@ -1,13 +1,6 @@
 h1.mb-3 Teams
 
-ul.nav.nav-tabs.mb-3
-  - @teams.each do |team|
-    li.nav-item
-      = link_to team.name, team_path(team), class: "nav-link #{'active' if team == @team}"
-
-  li.nav-item
-    = link_to new_team_path, class: 'nav-link' do
-      = icon 'fas', 'plus'
+= render 'tabs', teams: @teams, tab: @team
 
 table.table.table-no-border-top
   tbody
