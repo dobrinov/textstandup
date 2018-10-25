@@ -11,8 +11,8 @@
               li
                 = hidden_field_tag :render_form, render_form
                 = hidden_field_tag :edit_item_id, edit_item_id
-                = items_form.input :title
-                = items_form.input :summary, as: :text, input_html: {rows: 4}
+                = items_form.input :title, placeholder: 'e.g. "Feature X"'
+                = items_form.input :summary, as: :text, input_html: {rows: 4}, placeholder: 'Describe what is blocking your progress on your task'
                 = items_form.submit 'Save', class: 'btn btn-primary'
                 =< link_to 'Cancel', edit_morning_report_path(tab: :blockers), class: 'btn btn-outline-secondary'
 

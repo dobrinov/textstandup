@@ -13,7 +13,9 @@
                         collection: @report.previous_date_report.delivered,
                         tab: @tab,
                         render_form: @render_form,
-                        edit_item_id: @edit_item_id
+                        edit_item_id: @edit_item_id,
+                        title_placeholder: 'e.g. "Feature X"',
+                        summary_placeholder: 'Write a short summary about what you delivered and what probelem it solves'
 
       = render 'tasks', heading: 'What did you work on?',
                         name: :in_progress,
@@ -21,7 +23,9 @@
                         collection: @report.previous_date_report.in_progress,
                         tab: @tab,
                         render_form: @render_form,
-                        edit_item_id: @edit_item_id
+                        edit_item_id: @edit_item_id,
+                        title_placeholder: 'e.g. "Feature X"',
+                        summary_placeholder: "Describe your #{@report.previous_date_report.date.strftime '%A'}'s progress on this task"
 
     - @report.current_date_report.tap do |report|
       .list-group.report
@@ -35,7 +39,9 @@
                           collection: report.planned,
                           tab: @tab,
                           render_form: @render_form,
-                          edit_item_id: @edit_item_id
+                          edit_item_id: @edit_item_id,
+                          title_placeholder: 'e.g. "Feature X"',
+                          summary_placeholder: 'Describe what are you planning to do today'
 
         = render 'blockers', report: report,
                              collection: report.blockers,

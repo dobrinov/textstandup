@@ -9,8 +9,8 @@
             - if edit_item_id == items_form.object.id || !items_form.object.persisted?
 
               li.form
-                = items_form.input :title
-                = items_form.input :summary, as: :text, input_html: {rows: 4}
+                = items_form.input :title, placeholder: title_placeholder
+                = items_form.input :summary, as: :text, input_html: {rows: 4}, placeholder: summary_placeholder
                 = items_form.input :state, as: :hidden
                 = items_form.submit 'Save', class: 'btn btn-primary'
                 =< link_to 'Cancel', edit_morning_report_path(tab: name), class: 'btn btn-outline-secondary'
