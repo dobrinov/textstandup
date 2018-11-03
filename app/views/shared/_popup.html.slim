@@ -1,0 +1,11 @@
+.popup.js-popup
+  = link_to button_text, nil, class: "btn #{button_class} js-popup-trigger"
+
+  .js-popup-content.popup-content
+    .popup-title
+      h3 = heading
+      = link_to '#', class: 'popup-close-btn js-popup-close' do
+        = icon 'fas', 'times'
+
+    .popup-body
+      = yield
