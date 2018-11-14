@@ -1,0 +1,22 @@
+.users-table {
+  tbody > tr:first-child > td { border-top: none; }
+}
+
+.users-table-admin-col {
+  width: 20px;
+  text-align: right;
+
+  i {color: #D2B100;}
+}
+
+.users-table-avatar-col {
+  width: 44px;
+}
+
+.users-table-name-col {
+  text-align: left;
+}
+
+.users-table-actions-col {
+  text-align: right;
+}
