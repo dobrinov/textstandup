@@ -1,0 +1,52 @@
+h1.mb-3 = @company.name
+
+table.table.table-striped.users-table
+  tbody
+    - @employees.each do |employee|
+      tr
+        td.users-table-avatar-col
+          = render 'shared/avatar', user: employee, administrator: @company.administrated_by?(employee)
+
+        td.users-table-name-col
+          = employee.full_name
+
+        td.users-table-actions-col
+          - if employee == current_user && @company.administrated_by?(employee) && @company.admins.one?
+            =< render 'shared/popup', button_text: 'Leave', button_class: 'btn-outline-danger', heading: 'Not allowed' do
+              p You are currently the only admin in the company. If you want to leave you should promote at least one more employee to admin.
+              =< link_to 'Close', '#', class: 'btn btn-outline-secondary js-popup-close'
+
+          - elsif employee == current_user
+            =< render 'shared/popup', button_text: 'Leave', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
+              p Are you sure that you want to leave the company?
+              = link_to 'Yes', employment_path(employee.employment), class: 'btn btn-outline-danger', method: :delete
+              =< link_to 'No', '#', class: 'btn btn-outline-secondary js-popup-close'
+
+          - elsif @company.administrated_by?(current_user)
+            = render 'shared/popup', button_text: "#{@company.administrated_by?(employee) ? 'Admin' : 'Normal'}", button_class: 'btn-outline-secondary', heading: 'User role' do
+              = link_to 'Admin',
+                        employment_path(employee.employment, operation: 'promote'),
+                        method: :patch,
+                        class: "btn btn-outline-secondary btn-block #{'disabled' if @company.administrated_by?(employee)}"
+
+              = link_to 'Normal',
+                        employment_path(employee.employment, operation: 'revoke'),
+                        method: :patch,
+                        class: "btn btn-outline-secondary btn-block #{'disabled' unless @company.administrated_by?(employee)}"
+
+            =< render 'shared/popup', button_text: 'Remove', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
+              p Are you sure that you want to remove this employee from the company?
+              = link_to 'Yes', employment_path(employee.employment), class: 'btn btn-outline-danger', method: :delete
+              =< link_to 'No', '#', class: 'btn btn-outline-secondary js-popup-close'
+
+- if @company.administrated_by? current_user
+  .text-center
+    = render 'shared/popup', button_text: 'Invite to company', button_class: 'btn-primary', heading: 'Invite to company' do
+      .js-invitation-link-generator
+        .js-generated-links
+        = link_to 'Generate invitation link', invitations_path, class: 'btn btn-primary btn-block js-generation-bnt'
+
+    - if @company.administrated_by? current_user
+      =< render 'shared/popup', button_text: 'Delete company', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
+        = link_to 'Yes', company_path(@company), class: 'btn btn-outline-danger', method: :delete
+        =< link_to 'No', '#', class: 'btn btn-outline-secondary js-popup-close'

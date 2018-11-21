@@ -1,10 +1,10 @@
 class RootLocationsController < ApplicationController
   def navigate
     path =
-      if current_user.teams.empty?
-        new_team_path
+      if current_user.company
+        employees_path
       else
-        teams_path
+        new_company_path
       end
 
     redirect_to path

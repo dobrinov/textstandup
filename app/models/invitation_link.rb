@@ -1,7 +1,7 @@
 class InvitationLink < ApplicationRecord
   VALIDITY = 3.days
 
-  belongs_to :team
+  belongs_to :company
   belongs_to :inviting_user, class_name: 'User'
   belongs_to :invited_user, class_name: 'User', optional: true
 

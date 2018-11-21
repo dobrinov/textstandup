@@ -1,0 +1,8 @@
+h1.mb-3 New company
+.alert.alert-info You are not part of a company. In order to share reports with others you must belong to one. Create a company or get invited.
+
+ard
+.card-body
+  = simple_form_for @company, url: company_path do |form|
+    = form.input :name
+    = form.submit class: 'btn btn-primary'

@@ -1,8 +1,0 @@
-ul.nav.nav-tabs.mb-3
-  - teams.each do |team|
-    li.nav-item
-      = link_to team.name, team_path(team), class: "nav-link #{'active' if tab == team}"
-
-  li.nav-item
-    = link_to new_team_path, class: "nav-link #{'active' if tab == :new} js-tooltip", title: 'Create new team' do
-      = icon 'fas', 'plus'

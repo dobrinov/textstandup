@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {sessions: 'sessions', registrations: 'registrations', omniauth_callbacks: 'users/omniauth_callbacks'}
 
-  resources :teams, only: %i(index show new create destroy) do
-    resources :invitation_links, only: %i(show create), param: :code, shallow: true do
-      patch :use, on: :member
-    end
+  resource :company, only: %i(new create destroy)
+  resources :employees, only: %i(index)
+  resources :employments, only: %i(update destroy)
 
-    resources :memberships, only: %i(update destroy)
+  resources :invitations, only: %i(show create), param: :code do
+    patch :use, on: :member
   end
 
   root to: 'root_locations#navigate'

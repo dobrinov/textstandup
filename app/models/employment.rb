@@ -1,6 +1,6 @@
-class Membership < ApplicationRecord
+class Employment < ApplicationRecord
   belongs_to :user
-  belongs_to :team
+  belongs_to :company
 
   class << self
     def default_scope

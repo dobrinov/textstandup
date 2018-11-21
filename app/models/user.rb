@@ -3,15 +3,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2]
 
-  has_many :daily_reports
-  has_many :memberships
-  has_many :teams, through: :memberships
+  has_one :employment
+  has_one :company, through: :employment
 
   class << self
-    def todays_update
-      daily_reports.where date: Date.today
-    end
-
     def from_omniauth(access_token)
       data = access_token.info
       user = User.find_by email: data['email']
@@ -31,16 +26,5 @@ class User < ApplicationRecord
 
   def initials
     "#{first_name[0]}#{last_name[0]}"
-  end
-
-  def last_daily_report
-    today = Date.today
-
-    daily_reports.
-      where('year <= ?', today.year).
-      where('month <= ?', today.month).
-      where('day < ?', today.day).
-      order(year: :asc, month: :asc, day: :asc).
-      last
   end
 end
