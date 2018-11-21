@@ -6,7 +6,3 @@
 .table {
   td { vertical-align: middle; }
 }
-
-.table.table-no-border-top > tbody > tr:first-child > td {
-  border-top: none;
-}

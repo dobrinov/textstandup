@@ -4,12 +4,10 @@
 }
 
 .popup-content {
+  text-align: center;
   display: none;
   z-index: 1;
   position: absolute;
-  bottom: -1rem;
-  left: 50%;
-  transform: translate(-50%, 0);
   min-width: 20rem;
   max-width: 90%;
   background-color: #FFFFFF;

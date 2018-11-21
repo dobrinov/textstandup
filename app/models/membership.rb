@@ -4,7 +4,7 @@ class Membership < ApplicationRecord
 
   class << self
     def default_scope
-      order admin: :desc
+      order created_at: :asc
     end
   end
 end

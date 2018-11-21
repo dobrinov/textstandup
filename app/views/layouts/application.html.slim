@@ -20,8 +20,8 @@ html
           ul.navbar-nav.mr-auto
             li.nav-item
               = link_to 'Teams', teams_path, class: 'nav-link'
-            li.nav-item
-              = link_to 'Calendar', calendar_path, class: 'nav-link'
+          /   li.nav-item
+          /     = link_to 'Calendar', calendar_path, class: 'nav-link'
 
         ul.navbar-nav.ml-auto
           - if user_signed_in?
