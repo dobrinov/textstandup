@@ -1,6 +1,0 @@
-ul.nav.nav-tabs.mb-3
-  li.nav-item = link_to 'Planned', planned_daily_report_tasks_path(@daily_report), class: "nav-link #{'active' if tab == :planned}"
-  li.nav-item = link_to 'In progress', in_progress_daily_report_tasks_path(@daily_report), class: "nav-link #{'active' if tab == :in_progress}"
-  li.nav-item = link_to 'Delivered', delivered_daily_report_tasks_path(@daily_report), class: "nav-link #{'active' if tab == :delivered}"
-  li.nav-item = link_to 'Blockers', daily_report_blockers_path(@daily_report), class: "nav-link #{'active' if tab == :blockers}"
-  li.nav-item = link_to 'Announcements', daily_report_announcements_path(@daily_report), class: "nav-link #{'active' if tab == :announcements}"
