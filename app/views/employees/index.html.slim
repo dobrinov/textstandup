@@ -10,6 +10,16 @@ table.table.table-striped.users-table
         td.users-table-name-col
           = employee.full_name
 
+        td.users-table-subscription-col
+          - if employee == current_user
+            / Do not show button
+
+          - elsif current_user.follows?(employee)
+            = link_to 'Unfollow', subscription_path(current_user.followee_subscription_for(employee)), class: 'btn btn-outline-danger', method: :delete
+
+          - else
+            = link_to 'Follow', subscriptions_path(user_id: employee.id), class: 'btn btn-outline-secondary', method: :post
+
         td.users-table-actions-col
           - if employee == current_user && @company.administrated_by?(employee) && @company.admins.one?
             =< render 'shared/popup', button_text: 'Leave', button_class: 'btn-outline-danger', heading: 'Not allowed' do

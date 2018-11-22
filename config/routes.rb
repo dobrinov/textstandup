@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resource :company, only: %i(new create destroy)
   resources :employees, only: %i(index)
   resources :employments, only: %i(update destroy)
+  resources :subscriptions, only: %i(create destroy)
 
   resources :invitations, only: %i(show create), param: :code do
     patch :use, on: :member

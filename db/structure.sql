@@ -147,6 +147,38 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.subscriptions (
+    id bigint NOT NULL,
+    follower_id bigint NOT NULL,
+    followee_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.subscriptions_id_seq OWNED BY public.subscriptions.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -212,6 +244,13 @@ ALTER TABLE ONLY public.invitation_links ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions ALTER COLUMN id SET DEFAULT nextval('public.subscriptions_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -256,6 +295,14 @@ ALTER TABLE ONLY public.invitation_links
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: subscriptions subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -306,6 +353,27 @@ CREATE INDEX index_invitation_links_on_invited_user_id ON public.invitation_link
 --
 
 CREATE INDEX index_invitation_links_on_inviting_user_id ON public.invitation_links USING btree (inviting_user_id);
+
+
+--
+-- Name: index_subscriptions_on_followee_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_subscriptions_on_followee_id ON public.subscriptions USING btree (followee_id);
+
+
+--
+-- Name: index_subscriptions_on_follower_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_subscriptions_on_follower_id ON public.subscriptions USING btree (follower_id);
+
+
+--
+-- Name: index_subscriptions_on_follower_id_and_followee_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscriptions_on_follower_id_and_followee_id ON public.subscriptions USING btree (follower_id, followee_id);
 
 
 --
@@ -377,6 +445,22 @@ ALTER TABLE ONLY public.invitation_links
 
 
 --
+-- Name: subscriptions fk_rails_9c831c3900; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT fk_rails_9c831c3900 FOREIGN KEY (followee_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: subscriptions fk_rails_d91935f0cb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT fk_rails_d91935f0cb FOREIGN KEY (follower_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -386,6 +470,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180805540840'),
 ('20180806212446'),
 ('20181007195157'),
-('20181016132210');
+('20181016132210'),
+('20181121215809');
 
 
