@@ -19,7 +19,10 @@ html
         - if user_signed_in?
           ul.navbar-nav.mr-auto
             li.nav-item
+              = link_to 'Feed', feeds_path, class: 'nav-link'
+            li.nav-item
               = link_to 'People', employees_path, class: 'nav-link'
+
 
         ul.navbar-nav.ml-auto
           - if user_signed_in?

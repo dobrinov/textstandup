@@ -10,5 +10,7 @@ Rails.application.routes.draw do
     patch :use, on: :member
   end
 
+  resources :feeds, only: %i(index)
+
   root to: 'root_locations#navigate'
 end

@@ -1,0 +1,70 @@
+.row.justify-content-xl-center.mb-3
+  .col-xl-6.mb-3
+    .text-center
+      .btn.btn-primary.mb-3.btn-lg New report
+
+    .post
+      .post-header
+        = render 'shared/avatar', user: current_user, administrator: false
+        .details
+          .name = current_user.full_name
+          .date November 22 at 11:44
+
+        .popup.js-popup.actions
+          = link_to nil, class: "js-popup-trigger" do
+            = icon 'fas', 'ellipsis-h'
+
+          .js-popup-content.popup-content
+            .popup-body
+              = link_to 'Edit', '#', class: 'btn btn-outline-secondary btn-block'
+              = link_to 'Delete', '#', class: 'btn btn-outline-danger btn-block'
+
+      .post-body
+        h5 Current progress
+
+        h6 File splitting training platform
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in egestas nulla. Praesent at suscipit nulla. Suspendisse vitae scelerisque lacus.
+
+        h5 Plan for the day
+        h6 File splitting training platform
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in egestas nulla. Praesent at suscipit nulla. Suspendisse vitae scelerisque lacus.
+
+        h6 Cache images
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tincidunt mi purus, nec ullamcorper nibh blandit ac. Nulla in tincidunt risus, consectetur ultricies quam. Sed.
+
+    .post
+      .post-header
+        = render 'shared/avatar', user: current_user, administrator: false
+        .details
+          .name = current_user.full_name
+          .date November 22 at 11:44
+
+        .popup.js-popup.actions
+          = link_to nil, class: "js-popup-trigger" do
+            = icon 'fas', 'ellipsis-h'
+
+          .js-popup-content.popup-content
+            .popup-body
+              = link_to 'Edit', '#', class: 'btn btn-outline-secondary btn-block'
+              = link_to 'Delete', '#', class: 'btn btn-outline-danger btn-block'
+
+      .post-body
+        h5 Current progress
+
+        h6 File splitting training platform
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in egestas nulla. Praesent at suscipit nulla. Suspendisse vitae scelerisque lacus.
+
+        h5 Plan for the day
+        h6 File splitting training platform
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in egestas nulla. Praesent at suscipit nulla. Suspendisse vitae scelerisque lacus.
+
+        h6 Cache images
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tincidunt mi purus, nec ullamcorper nibh blandit ac. Nulla in tincidunt risus, consectetur ultricies quam. Sed.
+
+        h5 Blockers
+        h6 File splitting training platform
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in egestas nulla. Praesent at suscipit nulla. Suspendisse vitae scelerisque lacus.
+
+        h5 Announcements
+        h6 I am off on Monday
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in egestas nulla. Praesent at suscipit nulla. Suspendisse vitae scelerisque lacus.

@@ -1,0 +1,75 @@
+.post {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  background-color: #fff;
+  display: block;
+  padding: 0.75rem 1.25rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.post-header {
+  margin-bottom: 1rem;
+  position: relative;
+
+  .avatar {
+    vertical-align: middle;
+  }
+
+  .details {
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    display: inline-block;
+  }
+
+  .name {
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 0.15rem;
+  }
+
+  .date {
+    display: block;
+    line-height: 1;
+    font-size: 12px;
+    color: #999;
+  }
+
+  .actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+
+    i {
+      color: #666;
+
+      &:hover {
+        transform: scale(1.3);
+        transform-origin: center center;
+      }
+    }
+  }
+}
+
+.post-body {
+  h5 {
+    text-decoration: underline;
+  }
+
+  h6 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0 0 0.5rem 0;
+    color: #999999;
+  }
+}
+
+.post-footer {
+  outline: 1px dotted red;
+  margin-top: 1rem;
+}
