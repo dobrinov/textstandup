@@ -2,17 +2,17 @@ require 'rails_helper'
 
 describe InvitationLinkExecutor do
   let(:user) { create :user }
-  let(:team) { create :team }
-  let(:invitation_link) { create :invitation_link, team: team }
+  let(:company) { create :company }
+  let(:invitation_link) { create :invitation_link, company: company }
 
   around do |example|
     Timecop.freeze { example.run }
   end
 
-  it 'adds user to a team' do
+  it 'adds user to a company' do
     InvitationLinkExecutor.execute invitation_link, user
 
-    team.members.should eq [user]
+    company.employees.should eq [user]
   end
 
   it 'marks the invitation link as used' do

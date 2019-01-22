@@ -1,0 +1,7 @@
+.row.justify-content-xl-center.mb-3
+  .col-xl-6.mb-3
+    .new-report.js-new-report.mb-3 {data-morning-report="#{ReportToJson.execute(MorningReport.new(user: current_user), current_user, edited: true)}"
+                                    data-delivery-report="#{ReportToJson.execute(DeliveryReport.new(user: current_user), current_user, edited: true)}"}
+
+    - @reports.each do |report|
+      .report.js-report data-report=report

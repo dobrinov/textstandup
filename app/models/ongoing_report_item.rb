@@ -1,0 +1,2 @@
+class OngoingReportItem < ReportItem
+end

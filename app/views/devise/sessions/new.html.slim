@@ -5,8 +5,8 @@
       ' or
       = link_to 'create an account', new_user_registration_path
 
-    .list-group.report.mb-3
-      .list-group-item.report-title
+    .list-group.mb-3
+      .list-group-item
         = simple_form_for resource, as: resource_name, url: session_path(resource_name) do |form|
           = form.input :email, placeholder: 'e.g., john.doe@example.com'
           = form.input :password, as: :password, placeholder: 'e.g., **********'

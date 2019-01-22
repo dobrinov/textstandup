@@ -3,6 +3,10 @@
   text-decoration: none;
 }
 
+.form-control {
+  &::placeholder { color: #ccc; }
+}
+
 .table {
   td { vertical-align: middle; }
 }

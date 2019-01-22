@@ -23,52 +23,31 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
--- Name: task_states; Type: TYPE; Schema: public; Owner: -
+-- Name: report_item_type; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TYPE public.task_states AS ENUM (
-    'planned',
-    'in_progress',
-    'delivered'
+CREATE TYPE public.report_item_type AS ENUM (
+    'DeliveredReportItem',
+    'OngoingReportItem',
+    'PlannedReportItem',
+    'BlockerReportItem',
+    'AnnouncementReportItem'
+);
+
+
+--
+-- Name: report_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.report_type AS ENUM (
+    'DeliveryReport',
+    'MorningReport'
 );
 
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
-
---
--- Name: announcements; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.announcements (
-    id bigint NOT NULL,
-    title character varying NOT NULL,
-    summary character varying NOT NULL,
-    daily_report_id bigint NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: announcements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.announcements_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: announcements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.announcements_id_seq OWNED BY public.announcements.id;
-
 
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
@@ -83,24 +62,22 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
--- Name: blockers; Type: TABLE; Schema: public; Owner: -
+-- Name: companies; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.blockers (
+CREATE TABLE public.companies (
     id bigint NOT NULL,
-    title character varying NOT NULL,
-    summary character varying NOT NULL,
-    daily_report_id bigint NOT NULL,
+    name character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: blockers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: companies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.blockers_id_seq
+CREATE SEQUENCE public.companies_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -109,32 +86,31 @@ CREATE SEQUENCE public.blockers_id_seq
 
 
 --
--- Name: blockers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: companies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.blockers_id_seq OWNED BY public.blockers.id;
+ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
 
 
 --
--- Name: daily_reports; Type: TABLE; Schema: public; Owner: -
+-- Name: employments; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.daily_reports (
+CREATE TABLE public.employments (
     id bigint NOT NULL,
-    day integer NOT NULL,
-    month integer NOT NULL,
-    year integer NOT NULL,
     user_id bigint NOT NULL,
+    company_id bigint NOT NULL,
+    admin boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: daily_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: employments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.daily_reports_id_seq
+CREATE SEQUENCE public.employments_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -143,10 +119,10 @@ CREATE SEQUENCE public.daily_reports_id_seq
 
 
 --
--- Name: daily_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: employments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.daily_reports_id_seq OWNED BY public.daily_reports.id;
+ALTER SEQUENCE public.employments_id_seq OWNED BY public.employments.id;
 
 
 --
@@ -155,7 +131,7 @@ ALTER SEQUENCE public.daily_reports_id_seq OWNED BY public.daily_reports.id;
 
 CREATE TABLE public.invitation_links (
     id bigint NOT NULL,
-    team_id bigint NOT NULL,
+    company_id bigint NOT NULL,
     inviting_user_id bigint NOT NULL,
     invited_user_id bigint,
     code character varying NOT NULL,
@@ -185,24 +161,25 @@ ALTER SEQUENCE public.invitation_links_id_seq OWNED BY public.invitation_links.i
 
 
 --
--- Name: memberships; Type: TABLE; Schema: public; Owner: -
+-- Name: report_items; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.memberships (
+CREATE TABLE public.report_items (
     id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    team_id bigint NOT NULL,
-    admin boolean DEFAULT false NOT NULL,
+    title text NOT NULL,
+    description text NOT NULL,
+    type public.report_item_type NOT NULL,
+    report_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: memberships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: report_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.memberships_id_seq
+CREATE SEQUENCE public.report_items_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -211,10 +188,42 @@ CREATE SEQUENCE public.memberships_id_seq
 
 
 --
--- Name: memberships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: report_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.memberships_id_seq OWNED BY public.memberships.id;
+ALTER SEQUENCE public.report_items_id_seq OWNED BY public.report_items.id;
+
+
+--
+-- Name: reports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.reports (
+    id bigint NOT NULL,
+    type public.report_type NOT NULL,
+    user_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.reports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.reports_id_seq OWNED BY public.reports.id;
 
 
 --
@@ -227,25 +236,23 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: tasks; Type: TABLE; Schema: public; Owner: -
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.tasks (
+CREATE TABLE public.subscriptions (
     id bigint NOT NULL,
-    state public.task_states NOT NULL,
-    title character varying NOT NULL,
-    summary character varying NOT NULL,
-    daily_report_id bigint NOT NULL,
+    follower_id bigint NOT NULL,
+    followee_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.tasks_id_seq
+CREATE SEQUENCE public.subscriptions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -254,41 +261,10 @@ CREATE SEQUENCE public.tasks_id_seq
 
 
 --
--- Name: tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.tasks_id_seq OWNED BY public.tasks.id;
-
-
---
--- Name: teams; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.teams (
-    id bigint NOT NULL,
-    name character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: teams_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.teams_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: teams_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.teams_id_seq OWNED BY public.teams.id;
+ALTER SEQUENCE public.subscriptions_id_seq OWNED BY public.subscriptions.id;
 
 
 --
@@ -336,24 +312,17 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: announcements id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: companies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.announcements ALTER COLUMN id SET DEFAULT nextval('public.announcements_id_seq'::regclass);
-
-
---
--- Name: blockers id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.blockers ALTER COLUMN id SET DEFAULT nextval('public.blockers_id_seq'::regclass);
+ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.companies_id_seq'::regclass);
 
 
 --
--- Name: daily_reports id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: employments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.daily_reports ALTER COLUMN id SET DEFAULT nextval('public.daily_reports_id_seq'::regclass);
+ALTER TABLE ONLY public.employments ALTER COLUMN id SET DEFAULT nextval('public.employments_id_seq'::regclass);
 
 
 --
@@ -364,24 +333,24 @@ ALTER TABLE ONLY public.invitation_links ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- Name: memberships id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: report_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.memberships ALTER COLUMN id SET DEFAULT nextval('public.memberships_id_seq'::regclass);
-
-
---
--- Name: tasks id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.tasks ALTER COLUMN id SET DEFAULT nextval('public.tasks_id_seq'::regclass);
+ALTER TABLE ONLY public.report_items ALTER COLUMN id SET DEFAULT nextval('public.report_items_id_seq'::regclass);
 
 
 --
--- Name: teams id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: reports id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.teams ALTER COLUMN id SET DEFAULT nextval('public.teams_id_seq'::regclass);
+ALTER TABLE ONLY public.reports ALTER COLUMN id SET DEFAULT nextval('public.reports_id_seq'::regclass);
+
+
+--
+-- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions ALTER COLUMN id SET DEFAULT nextval('public.subscriptions_id_seq'::regclass);
 
 
 --
@@ -389,14 +358,6 @@ ALTER TABLE ONLY public.teams ALTER COLUMN id SET DEFAULT nextval('public.teams_
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
-
-
---
--- Name: announcements announcements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.announcements
-    ADD CONSTRAINT announcements_pkey PRIMARY KEY (id);
 
 
 --
@@ -408,19 +369,19 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: blockers blockers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: companies companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.blockers
-    ADD CONSTRAINT blockers_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.companies
+    ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
 
 
 --
--- Name: daily_reports daily_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: employments employments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.daily_reports
-    ADD CONSTRAINT daily_reports_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.employments
+    ADD CONSTRAINT employments_pkey PRIMARY KEY (id);
 
 
 --
@@ -432,11 +393,19 @@ ALTER TABLE ONLY public.invitation_links
 
 
 --
--- Name: memberships memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: report_items report_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.memberships
-    ADD CONSTRAINT memberships_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.report_items
+    ADD CONSTRAINT report_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reports reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reports
+    ADD CONSTRAINT reports_pkey PRIMARY KEY (id);
 
 
 --
@@ -448,19 +417,11 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: tasks tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: subscriptions subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.tasks
-    ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
-
-
---
--- Name: teams teams_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.teams
-    ADD CONSTRAINT teams_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -472,31 +433,31 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: index_announcements_on_daily_report_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_employments_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_announcements_on_daily_report_id ON public.announcements USING btree (daily_report_id);
-
-
---
--- Name: index_blockers_on_daily_report_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_blockers_on_daily_report_id ON public.blockers USING btree (daily_report_id);
+CREATE INDEX index_employments_on_company_id ON public.employments USING btree (company_id);
 
 
 --
--- Name: index_daily_reports_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_employments_on_company_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_daily_reports_on_user_id ON public.daily_reports USING btree (user_id);
+CREATE UNIQUE INDEX index_employments_on_company_id_and_user_id ON public.employments USING btree (company_id, user_id);
 
 
 --
--- Name: index_daily_reports_on_user_id_and_day_and_month_and_year; Type: INDEX; Schema: public; Owner: -
+-- Name: index_employments_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_daily_reports_on_user_id_and_day_and_month_and_year ON public.daily_reports USING btree (user_id, day, month, year);
+CREATE INDEX index_employments_on_user_id ON public.employments USING btree (user_id);
+
+
+--
+-- Name: index_invitation_links_on_company_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invitation_links_on_company_id ON public.invitation_links USING btree (company_id);
 
 
 --
@@ -514,45 +475,52 @@ CREATE INDEX index_invitation_links_on_inviting_user_id ON public.invitation_lin
 
 
 --
--- Name: index_invitation_links_on_team_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_report_items_on_report_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_invitation_links_on_team_id ON public.invitation_links USING btree (team_id);
-
-
---
--- Name: index_memberships_on_team_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_memberships_on_team_id ON public.memberships USING btree (team_id);
+CREATE INDEX index_report_items_on_report_id ON public.report_items USING btree (report_id);
 
 
 --
--- Name: index_memberships_on_team_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_report_items_on_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_memberships_on_team_id_and_user_id ON public.memberships USING btree (team_id, user_id);
-
-
---
--- Name: index_memberships_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_memberships_on_user_id ON public.memberships USING btree (user_id);
+CREATE INDEX index_report_items_on_type ON public.report_items USING btree (type);
 
 
 --
--- Name: index_tasks_on_daily_report_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_reports_on_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_tasks_on_daily_report_id ON public.tasks USING btree (daily_report_id);
+CREATE INDEX index_reports_on_type ON public.reports USING btree (type);
 
 
 --
--- Name: index_tasks_on_state; Type: INDEX; Schema: public; Owner: -
+-- Name: index_reports_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_tasks_on_state ON public.tasks USING btree (state);
+CREATE INDEX index_reports_on_user_id ON public.reports USING btree (user_id);
+
+
+--
+-- Name: index_subscriptions_on_followee_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_subscriptions_on_followee_id ON public.subscriptions USING btree (followee_id);
+
+
+--
+-- Name: index_subscriptions_on_follower_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_subscriptions_on_follower_id ON public.subscriptions USING btree (follower_id);
+
+
+--
+-- Name: index_subscriptions_on_follower_id_and_followee_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscriptions_on_follower_id_and_followee_id ON public.subscriptions USING btree (follower_id, followee_id);
 
 
 --
@@ -584,6 +552,22 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: employments fk_rails_0022565859; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employments
+    ADD CONSTRAINT fk_rails_0022565859 FOREIGN KEY (company_id) REFERENCES public.companies(id) ON DELETE CASCADE;
+
+
+--
+-- Name: report_items fk_rails_052dc35a5a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_items
+    ADD CONSTRAINT fk_rails_052dc35a5a FOREIGN KEY (report_id) REFERENCES public.reports(id) ON DELETE CASCADE;
+
+
+--
 -- Name: invitation_links fk_rails_05557c43f2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -592,11 +576,11 @@ ALTER TABLE ONLY public.invitation_links
 
 
 --
--- Name: tasks fk_rails_06f523c085; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: employments fk_rails_19190a6ae4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.tasks
-    ADD CONSTRAINT fk_rails_06f523c085 FOREIGN KEY (daily_report_id) REFERENCES public.daily_reports(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.employments
+    ADD CONSTRAINT fk_rails_19190a6ae4 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -608,51 +592,35 @@ ALTER TABLE ONLY public.invitation_links
 
 
 --
--- Name: announcements fk_rails_7c5e3eab4d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.announcements
-    ADD CONSTRAINT fk_rails_7c5e3eab4d FOREIGN KEY (daily_report_id) REFERENCES public.daily_reports(id) ON DELETE CASCADE;
-
-
---
--- Name: invitation_links fk_rails_8a6e852545; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: invitation_links fk_rails_420ec9b6b5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.invitation_links
-    ADD CONSTRAINT fk_rails_8a6e852545 FOREIGN KEY (team_id) REFERENCES public.teams(id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_420ec9b6b5 FOREIGN KEY (company_id) REFERENCES public.companies(id) ON DELETE CASCADE;
 
 
 --
--- Name: memberships fk_rails_99326fb65d; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: subscriptions fk_rails_9c831c3900; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.memberships
-    ADD CONSTRAINT fk_rails_99326fb65d FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
-
-
---
--- Name: memberships fk_rails_ae2aedcfaf; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.memberships
-    ADD CONSTRAINT fk_rails_ae2aedcfaf FOREIGN KEY (team_id) REFERENCES public.teams(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT fk_rails_9c831c3900 FOREIGN KEY (followee_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
--- Name: blockers fk_rails_c594661a11; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: reports fk_rails_c7699d537d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.blockers
-    ADD CONSTRAINT fk_rails_c594661a11 FOREIGN KEY (daily_report_id) REFERENCES public.daily_reports(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.reports
+    ADD CONSTRAINT fk_rails_c7699d537d FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
--- Name: daily_reports fk_rails_eeb337e825; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: subscriptions fk_rails_d91935f0cb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.daily_reports
-    ADD CONSTRAINT fk_rails_eeb337e825 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT fk_rails_d91935f0cb FOREIGN KEY (follower_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -662,14 +630,14 @@ ALTER TABLE ONLY public.daily_reports
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20180805540840'),
 ('20180806212446'),
-('20180828180000'),
-('20180828180004'),
-('20180828180434'),
-('20180828180445'),
-('20180828204326'),
-('20181006092141'),
 ('20181007195157'),
-('20181016132210');
+('20181016132210'),
+('20181121215809'),
+('20181210202631'),
+('20181210202632'),
+('20181210202707'),
+('20181210202708');
 
 
