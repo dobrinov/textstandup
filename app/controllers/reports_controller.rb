@@ -1,6 +1,8 @@
 class ReportsController < ApplicationController
   def index
     @reports = ReportSubscriptions.all current_user
+    @morning_report = ReportToJson.execute MorningReport.new(user: current_user), current_user, edited: true
+    @delivery_report = ReportToJson.execute DeliveryReport.new(user: current_user), current_user, edited: true
   end
 
   def create
