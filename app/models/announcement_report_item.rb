@@ -1,0 +1,2 @@
+class AnnouncementReportItem < ReportItem
+end

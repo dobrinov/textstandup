@@ -1,0 +1,97 @@
+.button-dialog {
+  display: inline-block;
+
+  .content {
+    display: none;
+  }
+}
+
+.button-dialog-content {
+  display: inline-block;
+  display: none;
+  text-align: center;
+  display: none;
+  z-index: 1;
+  position: absolute;
+  min-width: 20rem;
+  max-width: 26rem;
+  background-color: #FFFFFF;
+  padding: 1rem;
+  border-radius: 3px;
+  box-shadow: 0 8px 16px -4px rgba(9,45,66,.25), 0 0 0 1px rgba(9,45,66,.08);
+  overflow-wrap: break-word;
+  white-space: normal;
+
+  @media (max-width: 992px) { max-width: 95%; }
+
+  .arrow {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    background: #88b7d5;
+  
+    &:after, &:before {
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+    }
+  
+    &:after {
+      border-color: rgba(255, 255, 255, 0);
+      border-width: 8px;
+      margin-left: -8px;
+    }
+  
+    &:before {
+      border-color: rgba(204, 204, 204, 0);
+      border-width: 9px;
+      margin-left: -9px;
+    }
+  }
+}
+
+.button-dialog-content[x-placement="top"] .arrow {
+  bottom: 0;
+  &:after, &:before { top: 100%; }
+  &:after { border-top-color: #ffffff; }
+  &:before { border-top-color: #dddddd; }
+}
+
+.button-dialog-content[x-placement="bottom"] .arrow {
+  top: 0;
+  &:after, &:before { bottom: 100%; }
+  &:after { border-bottom-color: #ffffff; }
+  &:before { border-bottom-color: #dddddd; }
+}
+
+.button-dialog-title {
+  position: relative;
+
+  h3 {
+    color: #999999;
+    font-weight: normal;
+    font-size: 1rem;
+    line-height: 1rem;
+    margin: 0;
+    padding: 0 1rem;
+  }
+
+  text-align: center;
+  border-bottom: 1px solid #CCCCCC;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  padding: 0.8rem 0 0.8rem 0;
+}
+
+.button-dialog-body {
+}
+
+.button-dialog-close-btn {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  color: #CCCCCC;
+}

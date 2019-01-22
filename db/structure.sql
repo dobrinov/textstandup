@@ -22,6 +22,29 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: report_item_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.report_item_type AS ENUM (
+    'DeliveredReportItem',
+    'OngoingReportItem',
+    'PlannedReportItem',
+    'BlockerReportItem',
+    'AnnouncementReportItem'
+);
+
+
+--
+-- Name: report_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.report_type AS ENUM (
+    'DeliveryReport',
+    'MorningReport'
+);
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -138,6 +161,72 @@ ALTER SEQUENCE public.invitation_links_id_seq OWNED BY public.invitation_links.i
 
 
 --
+-- Name: report_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.report_items (
+    id bigint NOT NULL,
+    title text NOT NULL,
+    description text NOT NULL,
+    type public.report_item_type NOT NULL,
+    report_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: report_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.report_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: report_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.report_items_id_seq OWNED BY public.report_items.id;
+
+
+--
+-- Name: reports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.reports (
+    id bigint NOT NULL,
+    type public.report_type NOT NULL,
+    user_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.reports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.reports_id_seq OWNED BY public.reports.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -244,6 +333,20 @@ ALTER TABLE ONLY public.invitation_links ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: report_items id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_items ALTER COLUMN id SET DEFAULT nextval('public.report_items_id_seq'::regclass);
+
+
+--
+-- Name: reports id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reports ALTER COLUMN id SET DEFAULT nextval('public.reports_id_seq'::regclass);
+
+
+--
 -- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -287,6 +390,22 @@ ALTER TABLE ONLY public.employments
 
 ALTER TABLE ONLY public.invitation_links
     ADD CONSTRAINT invitation_links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: report_items report_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_items
+    ADD CONSTRAINT report_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reports reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reports
+    ADD CONSTRAINT reports_pkey PRIMARY KEY (id);
 
 
 --
@@ -356,6 +475,34 @@ CREATE INDEX index_invitation_links_on_inviting_user_id ON public.invitation_lin
 
 
 --
+-- Name: index_report_items_on_report_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_items_on_report_id ON public.report_items USING btree (report_id);
+
+
+--
+-- Name: index_report_items_on_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_items_on_type ON public.report_items USING btree (type);
+
+
+--
+-- Name: index_reports_on_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reports_on_type ON public.reports USING btree (type);
+
+
+--
+-- Name: index_reports_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reports_on_user_id ON public.reports USING btree (user_id);
+
+
+--
 -- Name: index_subscriptions_on_followee_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -413,6 +560,14 @@ ALTER TABLE ONLY public.employments
 
 
 --
+-- Name: report_items fk_rails_052dc35a5a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_items
+    ADD CONSTRAINT fk_rails_052dc35a5a FOREIGN KEY (report_id) REFERENCES public.reports(id) ON DELETE CASCADE;
+
+
+--
 -- Name: invitation_links fk_rails_05557c43f2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -453,6 +608,14 @@ ALTER TABLE ONLY public.subscriptions
 
 
 --
+-- Name: reports fk_rails_c7699d537d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reports
+    ADD CONSTRAINT fk_rails_c7699d537d FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: subscriptions fk_rails_d91935f0cb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -471,6 +634,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180806212446'),
 ('20181007195157'),
 ('20181016132210'),
-('20181121215809');
+('20181121215809'),
+('20181210202631'),
+('20181210202632'),
+('20181210202707'),
+('20181210202708');
 
 

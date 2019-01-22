@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :followee_subscriptions, class_name: 'Subscription', foreign_key: :follower_id
   has_many :followees, through: :followee_subscriptions
 
+  has_many :reports
+
   class << self
     def from_omniauth(access_token)
       data = access_token.info

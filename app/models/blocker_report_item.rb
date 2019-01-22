@@ -1,0 +1,2 @@
+class BlockerReportItem < ReportItem
+end

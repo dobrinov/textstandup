@@ -1,0 +1,2 @@
+class DeliveredReportItem < ReportItem
+end

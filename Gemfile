@@ -9,6 +9,7 @@ gem 'active_attr'
 gem 'bootsnap', require: false
 gem 'coffee-rails'
 gem 'devise'
+gem 'draper'
 gem 'font-awesome-sass'
 gem 'omniauth-google-oauth2'
 gem 'rails'

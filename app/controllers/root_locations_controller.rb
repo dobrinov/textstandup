@@ -2,7 +2,7 @@ class RootLocationsController < ApplicationController
   def navigate
     path =
       if current_user.company
-        feeds_path
+        reports_path
       else
         new_company_path
       end

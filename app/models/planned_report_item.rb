@@ -1,0 +1,2 @@
+class PlannedReportItem < ReportItem
+end

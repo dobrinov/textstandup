@@ -1,0 +1,11 @@
+.button-dialog.js-button-dialog
+  .btn.js-trigger class="#{button_class}" = button_text
+
+  .content.js-content
+    .button-dialog-title
+      h3 = heading
+      = link_to '#', class: 'button-dialog-close-btn js-close' do
+        = icon 'fas', 'times'
+
+    .button-dialog-body
+      = yield
