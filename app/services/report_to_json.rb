@@ -53,10 +53,10 @@ module ReportToJson
       'DeliveredReportItem' => {
         heading: 'Delivered',
         title: {
-          placeholder: '?'
+          placeholder: 'Summarize what was delivered'
         },
         description: {
-          placeholder: '?'
+          placeholder: 'Provide some information on what was delivered and what was the need for it'
         },
         newItem: {
           tooltip: 'Add a completed item'
