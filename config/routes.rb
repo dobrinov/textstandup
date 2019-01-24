@@ -5,7 +5,10 @@ Rails.application.routes.draw do
                                     omniauth_callbacks: 'users/omniauth_callbacks',
                                   }
 
-  resource :company, only: %i(new create destroy)
+  resource :company, only: %i(new create destroy) do
+    get :missing, on: :member
+  end
+
   resources :employees, only: %i(index)
   resources :employments, only: %i(update destroy)
   resources :subscriptions, only: %i(create destroy)
@@ -15,5 +18,5 @@ Rails.application.routes.draw do
     patch :use, on: :member
   end
 
-  root to: 'root_locations#navigate'
+  root to: 'reports#index'
 end

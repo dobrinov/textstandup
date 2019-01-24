@@ -1,4 +1,8 @@
 class CompaniesController < ApplicationController
+  def missing
+    redirect_to employees_path if current_user.company.present?
+  end
+
   def new
     @company = Company.new
   end

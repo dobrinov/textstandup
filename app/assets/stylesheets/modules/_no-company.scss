@@ -1,0 +1,17 @@
+.missing-company-dialog {
+  .row { align-items: center; }
+  text-align: center;
+
+  .option {
+    background-color: #eeeeee;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    min-height: 180px;
+  }
+
+  .or {
+    padding: 1rem;
+    font-size: 22px;
+    color: #666666;
+  }
+}

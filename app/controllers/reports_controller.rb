@@ -1,4 +1,6 @@
 class ReportsController < ApplicationController
+  before_action :redirect_if_no_company
+
   def index
     @reports = ReportSubscriptions.all current_user
     @morning_report = ReportToJson.execute MorningReport.new(user: current_user), current_user, edited: true
