@@ -1,63 +1,82 @@
-h1.mb-3 = @company.name
+.row.justify-content-xl-center
+  .col-xl-7
+    h1 = @company.name
 
-table.table.table-striped.users-table
-  tbody
-    - @employees.each do |employee|
-      tr
-        td.users-table-avatar-col
-          = render 'shared/avatar', user: employee, administrator: @company.administrated_by?(employee)
-
-        td.users-table-name-col
-          = employee.full_name
-
-        td.users-table-subscription-col
-          - if employee == current_user
-            / Do not show button
-
-          - elsif current_user.follows?(employee)
-            = link_to 'Unfollow', subscription_path(current_user.followee_subscription_for(employee)), class: 'btn btn-outline-danger', method: :delete
-
-          - else
-            = link_to 'Follow', subscriptions_path(user_id: employee.id), class: 'btn btn-outline-secondary', method: :post
-
-        td.users-table-actions-col
-          - if employee == current_user && @company.administrated_by?(employee) && @company.admins.one?
-            =< render 'shared/button_dialog', button_text: 'Leave', button_class: 'btn-outline-danger', heading: 'Not allowed' do
-              p You are currently the only admin in the company. If you want to leave you should promote at least one more employee to admin.
-              =< link_to 'Close', '#', class: 'btn btn-outline-secondary js-close'
-
-          - elsif employee == current_user
-            =< render 'shared/button_dialog', button_text: 'Leave', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
-              p Are you sure that you want to leave the company?
-              = link_to 'Yes', employment_path(employee.employment), class: 'btn btn-outline-danger', method: :delete
-              =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
-
-          - elsif @company.administrated_by?(current_user)
-            = render 'shared/button_dialog', button_text: "#{@company.administrated_by?(employee) ? 'Admin' : 'Normal'}", button_class: 'btn-outline-secondary', heading: 'User role' do
-              = link_to 'Admin',
-                        employment_path(employee.employment, operation: 'promote'),
-                        method: :patch,
-                        class: "btn btn-outline-secondary btn-block #{'disabled' if @company.administrated_by?(employee)}"
-
-              = link_to 'Normal',
-                        employment_path(employee.employment, operation: 'revoke'),
-                        method: :patch,
-                        class: "btn btn-outline-secondary btn-block #{'disabled' unless @company.administrated_by?(employee)}"
-
-            =< render 'shared/button_dialog', button_text: 'Remove', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
-              p Are you sure that you want to remove this employee from the company?
-              = link_to 'Yes', employment_path(employee.employment), class: 'btn btn-outline-danger', method: :delete
-              =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
-
-- if @company.administrated_by? current_user
-  .text-center
-    = render 'shared/button_dialog', button_text: 'Invite to company', button_class: 'btn-primary', heading: 'Invite to company' do
-      p Generate an invitation link and send it to a person whom you would like to invite to your company.
-      .js-invitation-link-generator
-        .js-generated-links
-        = link_to 'Generate an invitation link', invitations_path, class: 'btn btn-primary btn-block js-generation-bnt'
-
+.row.justify-content-xl-center.text-center
+  .col-xl-7
     - if @company.administrated_by? current_user
+      - if @company.employees.one?
+        .alert.alert-info
+          p You are currently the only employee in your company. Invite more people so you can share updates with someone.
+
+          = render 'shared/button_dialog', button_text: 'Invite to company', button_class: 'btn-primary', heading: 'Invite to company' do
+            p Generate an invitation link and send it to a person whom you would like to invite to your company.
+            .js-invitation-link-generator
+              .js-generated-links
+              = link_to 'Generate an invitation link', invitations_path, class: 'btn btn-primary btn-block js-generation-bnt'
+
+.row.justify-content-xl-center
+  .col-xl-7
+    table.table.table-striped.users-table
+      tbody
+        - @employees.each do |employee|
+          tr
+            td.users-table-avatar-col
+              = render 'shared/avatar', user: employee, administrator: @company.administrated_by?(employee)
+
+            td.users-table-name-col
+              = employee.full_name
+
+            td.users-table-subscription-col
+              - if employee == current_user
+                / Do not show button
+
+              - elsif current_user.follows?(employee)
+                = link_to 'Unfollow', subscription_path(current_user.followee_subscription_for(employee)), class: 'btn btn-outline-danger', method: :delete
+
+              - else
+                = link_to 'Follow', subscriptions_path(user_id: employee.id), class: 'btn btn-outline-secondary', method: :post
+
+            td.users-table-actions-col
+              - if @company.employees.many?
+                - if employee == current_user && @company.administrated_by?(employee) && @company.admins.one?
+                  =< render 'shared/button_dialog', button_text: 'Leave', button_class: 'btn-outline-danger', heading: 'Not allowed' do
+                    p You are currently the only admin in the company. If you want to leave you should promote at least one more employee to admin.
+                    =< link_to 'Close', '#', class: 'btn btn-outline-secondary js-close'
+
+                - elsif employee == current_user
+                  =< render 'shared/button_dialog', button_text: 'Leave', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
+                    p Are you sure that you want to leave the company?
+                    = link_to 'Yes', employment_path(employee.employment), class: 'btn btn-outline-danger', method: :delete
+                    =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
+
+                - elsif @company.administrated_by?(current_user)
+                  = render 'shared/button_dialog', button_text: "#{@company.administrated_by?(employee) ? 'Admin' : 'Normal'}", button_class: 'btn-outline-secondary', heading: 'User role' do
+                    = link_to 'Admin',
+                              employment_path(employee.employment, operation: 'promote'),
+                              method: :patch,
+                              class: "btn btn-outline-secondary btn-block #{'disabled' if @company.administrated_by?(employee)}"
+
+                    = link_to 'Normal',
+                              employment_path(employee.employment, operation: 'revoke'),
+                              method: :patch,
+                              class: "btn btn-outline-secondary btn-block #{'disabled' unless @company.administrated_by?(employee)}"
+
+                =< render 'shared/button_dialog', button_text: 'Remove', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
+                  p Are you sure that you want to remove this employee from the company?
+                  = link_to 'Yes', employment_path(employee.employment), class: 'btn btn-outline-danger', method: :delete
+                  =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
+
+.row.justify-content-xl-center.mb-3.text-center
+  .col-xl-7
+    - if @company.administrated_by? current_user
+      - if @company.employees.many?
+        = render 'shared/button_dialog', button_text: 'Invite to company', button_class: 'btn-primary', heading: 'Invite to company' do
+          p Generate an invitation link and send it to a person whom you would like to invite to your company.
+          .js-invitation-link-generator
+            .js-generated-links
+            = link_to 'Generate an invitation link', invitations_path, class: 'btn btn-primary btn-block js-generation-bnt'
+
       =< render 'shared/button_dialog', button_text: 'Delete company', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
         = link_to 'Yes', company_path(@company), class: 'btn btn-outline-danger', method: :delete
         =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
