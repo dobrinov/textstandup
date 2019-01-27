@@ -17,57 +17,56 @@
 
 .row.justify-content-xl-center
   .col-xl-7
-    .table-responsive
-      table.table.table-striped.users-table
-        tbody
-          - @employees.each do |employee|
-            tr
-              td.users-table-avatar-col
-                = render 'shared/avatar', user: employee, administrator: @company.administrated_by?(employee)
+    table.table.table-striped.users-table
+      tbody
+        - @employees.each do |employee|
+          tr
+            td.users-table-avatar-col
+              = render 'shared/avatar', user: employee, administrator: @company.administrated_by?(employee)
 
-              td.users-table-name-col
-                = employee.full_name
+            td.users-table-name-col
+              = employee.full_name
 
-              td.users-table-subscription-col
-                - if employee == current_user
-                  / Do not show button
+            td.users-table-subscription-col
+              - if employee == current_user
+                / Do not show button
 
-                - elsif current_user.follows?(employee)
-                  = link_to 'Unfollow', subscription_path(current_user.followee_subscription_for(employee)), class: 'btn btn-outline-danger btn-sm', method: :delete
+              - elsif current_user.follows?(employee)
+                = link_to 'Unfollow', subscription_path(current_user.followee_subscription_for(employee)), class: 'btn btn-outline-danger btn-sm', method: :delete
 
-                - else
-                  = link_to 'Follow', subscriptions_path(user_id: employee.id), class: 'btn btn-outline-secondary btn-sm', method: :post
+              - else
+                = link_to 'Follow', subscriptions_path(user_id: employee.id), class: 'btn btn-outline-secondary btn-sm', method: :post
 
-              td.users-table-actions-col
-                - if @company.employees.many?
-                  - if employee == current_user && @company.administrated_by?(employee) && @company.admins.one?
-                    =< render 'shared/button_dialog', button_text: 'Leave', button_class: 'btn-outline-secondary btn-sm', heading: 'Not allowed' do
-                      p You are currently the only admin in the company. If you want to leave you should promote at least one more employee to admin.
-                      =< link_to 'Close', '#', class: 'btn btn-outline-secondary js-close'
+            td.users-table-actions-col
+              - if @company.employees.many?
+                - if employee == current_user && @company.administrated_by?(employee) && @company.admins.one?
+                  =< render 'shared/button_dialog', button_text: 'Leave', button_class: 'btn-outline-secondary btn-sm', heading: 'Not allowed' do
+                    p You are currently the only admin in the company. If you want to leave you should promote at least one more employee to admin.
+                    =< link_to 'Close', '#', class: 'btn btn-outline-secondary js-close'
 
-                  - elsif employee == current_user && @company.administrated_by?(employee) && @company.admins.many?
-                    =< render 'shared/button_dialog', button_text: 'Leave', button_class: 'btn-outline-danger btn-sm', heading: 'Are you sure?' do
-                      p Are you sure that you want to leave the company?
-                      = link_to 'Yes', employment_path(employee.employment), class: 'btn btn-outline-danger', method: :delete
-                      =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
+                - elsif employee == current_user && @company.administrated_by?(employee) && @company.admins.many?
+                  =< render 'shared/button_dialog', button_text: 'Leave', button_class: 'btn-outline-danger btn-sm', heading: 'Are you sure?' do
+                    p Are you sure that you want to leave the company?
+                    = link_to 'Yes', employment_path(employee.employment), class: 'btn btn-outline-danger', method: :delete
+                    =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
 
-                  - elsif employee != current_user && @company.administrated_by?(current_user)
-                    = render 'shared/button_dialog', button_text: "#{@company.administrated_by?(employee) ? 'Admin' : 'Normal'}", button_class: 'btn-outline-secondary btn-sm', heading: 'User role' do
-                      .btn-group
-                        = link_to 'Admin',
-                                  employment_path(employee.employment, operation: 'promote'),
-                                  method: :patch,
-                                  class: "btn btn-outline-secondary #{'disabled' if @company.administrated_by?(employee)}"
+                - elsif employee != current_user && @company.administrated_by?(current_user)
+                  = render 'shared/button_dialog', button_text: "#{@company.administrated_by?(employee) ? 'Admin' : 'Normal'}", button_class: 'btn-outline-secondary btn-sm', heading: 'User role' do
+                    .btn-group
+                      = link_to 'Admin',
+                                employment_path(employee.employment, operation: 'promote'),
+                                method: :patch,
+                                class: "btn btn-outline-secondary #{'disabled' if @company.administrated_by?(employee)}"
 
-                        = link_to 'Normal',
-                                  employment_path(employee.employment, operation: 'revoke'),
-                                  method: :patch,
-                                  class: "btn btn-outline-secondary #{'disabled' unless @company.administrated_by?(employee)}"
+                      = link_to 'Normal',
+                                employment_path(employee.employment, operation: 'revoke'),
+                                method: :patch,
+                                class: "btn btn-outline-secondary #{'disabled' unless @company.administrated_by?(employee)}"
 
-                    =< render 'shared/button_dialog', button_text: 'Remove', button_class: 'btn-outline-danger btn-sm', heading: 'Are you sure?' do
-                      p Are you sure that you want to remove this employee from the company?
-                      = link_to 'Yes', employment_path(employee.employment), class: 'btn btn-outline-danger', method: :delete
-                      =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
+                  =< render 'shared/button_dialog', button_text: 'Remove', button_class: 'btn-outline-danger btn-sm', heading: 'Are you sure?' do
+                    p Are you sure that you want to remove this employee from the company?
+                    = link_to 'Yes', employment_path(employee.employment), class: 'btn btn-outline-danger', method: :delete
+                    =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
 
 .row.justify-content-xl-center.mb-3.text-center
   .col-xl-7
