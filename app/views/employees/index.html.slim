@@ -7,7 +7,7 @@
     - if @company.administrated_by? current_user
       - if @company.employees.one?
         .alert.alert-info
-          p You are currently the only employee in this company. Invite more people so you can share updates with someone.
+          p You are currently the only employee of this company. Invite more people so you can share updates with someone.
 
           = render 'shared/button_dialog', button_text: 'Invite to company', button_class: 'btn-primary', heading: 'Invite to company' do
             p Generate an invitation link and send it to a person whom you would like to invite to your company.
