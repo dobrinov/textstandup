@@ -1,5 +1,25 @@
+- if current_user.company.administrated_by?(current_user) && current_user.company.employees.one?
+  .row.justify-content-xl-center.text-center
+    .col-xl-6
+      .alert.alert-info
+        p You are currently the only employee of this company. Unless you invite and subscribe to someone you will see only your own reports.
+
+        = render 'shared/button_dialog', button_text: 'Invite people', button_class: 'btn-outline-primary', heading: 'Invite to company' do
+          p Generate an invitation link and send it to a person whom you would like to invite to your company.
+          .js-invitation-link-generator
+            .js-generated-links
+            = link_to 'Generate an invitation link', invitations_path, class: 'btn btn-primary btn-block js-generation-bnt'
+
+- elsif current_user.followees.empty?
+  .row.justify-content-xl-center.text-center
+    .col-xl-6
+      .alert.alert-info
+        p You are currently not subscribed for updates from anyone. Unless you do so you will be seeing only your own reports.
+        = link_to 'Subscribe', employees_path, class: 'btn btn-outline-primary'
+
+
 .row.justify-content-xl-center.mb-3
-  .col-xl-6.mb-3
+  .col-xl-6
     .new-report.js-new-report.mb-3 data-morning-report=@morning_report data-delivery-report=@delivery_report
 
     - @reports.each do |report|
