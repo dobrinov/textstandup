@@ -45,7 +45,7 @@ module ReportToJson
   end
 
   def published_at(report)
-    report.persisted? ? report.created_at&.strftime('%d %b %Y at %l:%M%p') : nil
+    report.persisted? ? report.created_at.in_time_zone(report.user.time_zone).strftime('%d %b %Y at %l:%M%p') : nil
   end
 
   def locales

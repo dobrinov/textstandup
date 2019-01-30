@@ -26,16 +26,12 @@ html
 
         ul.navbar-nav.ml-auto
           - if user_signed_in?
-            li.nav-item
-              span.nav-link = current_user.full_name
-            li.nav-item
-              = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link'
+            li.nav-item = link_to current_user.full_name, profile_path, class: 'nav-link'
+            li.nav-item = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link'
 
           - else
-            li.nav-item
-              = link_to 'Log in', new_user_session_path, class: 'nav-link'
-            li.nav-item
-              = link_to 'Sign up', new_user_registration_path, class: 'nav-link'
+            li.nav-item = link_to 'Log in', new_user_session_path, class: 'nav-link'
+            li.nav-item = link_to 'Sign up', new_user_registration_path, class: 'nav-link'
 
 
     .container-fluid

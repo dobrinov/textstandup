@@ -288,7 +288,8 @@ CREATE TABLE public.users (
     manager_id bigint,
     company_id bigint,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    time_zone character varying DEFAULT 'UTC'::character varying NOT NULL
 );
 
 
@@ -638,6 +639,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181210202631'),
 ('20181210202632'),
 ('20181210202707'),
-('20181210202708');
+('20181210202708'),
+('20190130065924');
 
 

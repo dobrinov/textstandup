@@ -1,0 +1,39 @@
+.row.justify-content-xl-center
+  .col-xl-6
+    h1 Profile
+
+- if flash[:notice].present?
+  .row.justify-content-xl-center
+    .col-xl-6
+      .alert.alert-success = flash[:notice]
+
+.row.justify-content-xl-center.mb-5
+  .col-xl-6
+    = simple_form_for @user, url: profile_path do |form|
+      .row
+        .col
+          = form.input :first_name
+
+        .col
+          = form.input :last_name
+
+      .row
+        .col
+          = form.input :time_zone
+
+      .row
+        .col
+          = form.submit 'Save', class: 'btn btn-primary'
+
+.row.justify-content-xl-center
+  .col-xl-6
+    .card.border-danger
+      .card-body.text-danger
+        h5 Account deletion
+        p If you are not using the application and you would like your data to be deleted, you can do this here. Be aware that the action is immediate and it is not reversible.
+
+        =< render 'shared/button_dialog', button_text: 'Delete account', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
+          p This is an irrevertable action. Are you sure that you want to continue?
+          = link_to 'Yes', profile_path, class: 'btn btn-outline-danger', method: :delete
+          =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
+

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :employments, only: %i(update destroy)
   resources :subscriptions, only: %i(create destroy)
   resources :reports, only: %i(index create update)
+  resource :profile, only: %i(show update destroy)
 
   resources :invitations, only: %i(show create), param: :code do
     patch :use, on: :member
