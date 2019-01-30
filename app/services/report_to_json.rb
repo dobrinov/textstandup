@@ -5,7 +5,7 @@ module ReportToJson
     {
       submit_path: submit_path(report),
       submit_method: submit_method(report),
-      published_at: published_at(report),
+      published_at: published_at(report, viewer),
       user: {
         initials: report.user.initials,
         full_name: report.user.full_name,
@@ -44,8 +44,8 @@ module ReportToJson
     report.persisted? ? :patch : :post
   end
 
-  def published_at(report)
-    report.persisted? ? report.created_at.in_time_zone(report.user.time_zone).strftime('%d %b %Y at %l:%M%p') : nil
+  def published_at(report, viewer)
+    report.persisted? ? report.created_at.in_time_zone(viewer.time_zone).strftime('%d %b %Y at %l:%M%p') : nil
   end
 
   def locales
