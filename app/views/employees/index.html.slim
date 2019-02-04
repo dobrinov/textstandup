@@ -1,10 +1,10 @@
 .row.justify-content-xl-center
-  .col-xl-7
+  .col-xl-6
     h1 = @company.name
 
 - if @company.administrated_by?(current_user) && @company.employees.one?
   .row.justify-content-lg-center.text-center
-    .col-xl-7
+    .col-xl-6
       .alert.alert-info
         p You are currently the only employee of this company. Invite more people so you can share updates with someone.
 
@@ -15,7 +15,7 @@
             = link_to 'Generate an invitation link', invitations_path, class: 'btn btn-primary btn-block js-generation-bnt'
 
 .row.justify-content-xl-center
-  .col-xl-7
+  .col-xl-6
     table.table.table-striped.users-table
       tbody
         - @employees.each do |employee|
@@ -68,7 +68,7 @@
                     =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'
 
 .row.justify-content-xl-center.mb-3.text-center
-  .col-xl-7
+  .col-xl-6
     - if @company.administrated_by? current_user
       - if @company.employees.many?
         = render 'shared/button_dialog', button_text: 'Invite to company', button_class: 'btn-primary', heading: 'Invite to company' do
@@ -76,7 +76,3 @@
           .js-invitation-link-generator
             .js-generated-links
             = link_to 'Generate an invitation link', invitations_path, class: 'btn btn-primary btn-block js-generation-bnt'
-
-      =< render 'shared/button_dialog', button_text: 'Delete company', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
-        = link_to 'Yes', company_path(@company), class: 'btn btn-outline-danger', method: :delete
-        =< link_to 'No', '#', class: 'btn btn-outline-secondary js-close'

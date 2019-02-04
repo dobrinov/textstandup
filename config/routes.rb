@@ -5,8 +5,8 @@ Rails.application.routes.draw do
                                     omniauth_callbacks: 'users/omniauth_callbacks',
                                   }
 
-  resource :company, only: %i(new create destroy) do
-    get :missing, on: :member
+  resource :company, only: %i(show new create update destroy) do
+    get :missing
   end
 
   resources :employees, only: %i(index)

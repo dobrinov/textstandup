@@ -22,7 +22,9 @@ html
               = link_to 'Feed', reports_path, class: 'nav-link'
             li.nav-item
               = link_to 'People', employees_path, class: 'nav-link'
-
+            li.nav-item
+              - if current_user.company && current_user.company.administrated_by?(current_user)
+                = link_to 'Company', company_path, class: 'nav-link'
 
         ul.navbar-nav.ml-auto
           - if user_signed_in?
