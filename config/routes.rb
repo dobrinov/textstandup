@@ -19,5 +19,12 @@ Rails.application.routes.draw do
     patch :use, on: :member
   end
 
+  resources :integrations, only: %i(index) do
+    collection do
+      get :slack_callback
+      delete :uninstall_slack
+    end
+  end
+
   root to: 'reports#index'
 end

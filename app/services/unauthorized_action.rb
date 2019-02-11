@@ -1,0 +1,1 @@
+class UnauthorizedAction < StandardError; end

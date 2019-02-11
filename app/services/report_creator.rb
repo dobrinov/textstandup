@@ -18,6 +18,8 @@ module ReportCreator
       end
     end
 
+    NotifySubscribers.execute report
+
     report
   end
 

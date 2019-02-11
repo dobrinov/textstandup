@@ -1,0 +1,24 @@
+.row.justify-content-xl-center.mb-3
+  .col-xl-6
+    h1 Integrations
+
+- if flash[:notice].present?
+  .row.justify-content-xl-center
+    .col-xl-6
+      .alert.alert-success = flash[:notice]
+
+.row.justify-content-xl-center
+  .col-xl-6
+    .card
+      .card-body
+        .card-title
+          h5 Slack
+
+          p.card-text Installing this integration will allow you to receive notifications about reports in Slack.
+
+        - if @company.slack_installed?
+          = link_to 'Reinstall', slack_authorization_url, class: 'btn btn-outline-secondary'
+          =< link_to 'Uninstall', uninstall_slack_integrations_path, class: 'btn btn-outline-danger', method: :delete
+
+        - else
+          = link_to 'Install', slack_authorization_url, class: 'btn btn-primary'

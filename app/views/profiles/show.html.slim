@@ -17,6 +17,16 @@
         .col
           = form.input :last_name, input_html: {autocomplete: 'off'}
 
+      - if @user.company.slack_access_token.present?
+        .row.mb-3
+          .col
+            = form.label :slack_handle
+
+            .input-group
+              .input-group-prepend
+                span.input-group-text @
+              = form.input :slack_handle, wrapper: false, label: false
+
       .row
         .col
           = form.input :time_zone

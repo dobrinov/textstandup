@@ -69,7 +69,8 @@ CREATE TABLE public.companies (
     id bigint NOT NULL,
     name character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    slack_access_token character varying
 );
 
 
@@ -289,7 +290,8 @@ CREATE TABLE public.users (
     company_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    time_zone character varying DEFAULT 'UTC'::character varying NOT NULL
+    time_zone character varying DEFAULT 'UTC'::character varying NOT NULL,
+    slack_handle character varying
 );
 
 
@@ -640,6 +642,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181210202632'),
 ('20181210202707'),
 ('20181210202708'),
-('20190130065924');
+('20190130065924'),
+('20190205221027'),
+('20190205225850');
 
 

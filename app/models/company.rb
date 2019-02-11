@@ -12,4 +12,8 @@ class Company < ApplicationRecord
   def administrated_by?(user)
     admins.where(employments: {user: user}).exists?
   end
+
+  def slack_installed?
+    slack_access_token?
+  end
 end

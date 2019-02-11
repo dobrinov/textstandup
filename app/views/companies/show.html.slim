@@ -16,12 +16,13 @@
         .col
           = form.submit 'Save', class: 'btn btn-primary'
 
+
 .row.justify-content-xl-center
   .col-xl-6
     .card.border-danger
       .card-body.text-danger
         h5 Company deletion
-        p If you are not using the application and you would like your data to be deleted, you can do this here. Be aware that the action is immediate and it is not reversible.
+        p If you want to delete the company which you are administrating, you can do it from here. Keep in mind that this is an irrevertable action and will affect all users associated with it.
 
         =< render 'shared/button_dialog', button_text: 'Delete company', button_class: 'btn-outline-danger', heading: 'Are you sure?' do
           p This is an irrevertable action. Are you sure that you want to continue?

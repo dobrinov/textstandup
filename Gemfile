@@ -17,6 +17,7 @@ gem 'pg'
 gem 'puma'
 gem 'sass-rails'
 gem 'simple_form'
+gem 'slack-ruby-client'
 gem "slim-rails"
 gem 'uglifier'
 
