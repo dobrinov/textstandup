@@ -4,9 +4,12 @@ class IntegrationsController < ApplicationController
   end
 
   def slack_callback
-    SlackInstaller.execute params[:code], current_user
-
-    redirect_to integrations_path, notice: 'Slack integration successful'
+    if params[:code].present?
+      SlackInstaller.execute params[:code], current_user
+      redirect_to integrations_path, notice: 'Slack integration successful'
+    else
+      redirect_to integrations_path, alert: 'Slack integration was not successful'
+    end
   end
 
   def uninstall_slack

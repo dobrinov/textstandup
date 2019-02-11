@@ -7,6 +7,13 @@
     .col-xl-6
       .alert.alert-success = flash[:notice]
 
+
+- if flash[:alert].present?
+  .row.justify-content-xl-center
+    .col-xl-6
+      .alert.alert-danger = flash[:alert]
+
+
 .row.justify-content-xl-center
   .col-xl-6
     .card
