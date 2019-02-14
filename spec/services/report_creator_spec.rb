@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe ReportCreator do
   it 'creates a morning report' do
-    user = create :user
+    user = create :user, :employed
+
     attributes = {
       type: 'MorningReport',
       items: [
@@ -23,7 +24,7 @@ describe ReportCreator do
   end
 
   it 'creates a delivery report' do
-    user = create :user
+    user = create :user, :employed
     attributes = {
       type: 'MorningReport',
       items: [{title: 'Title', description: 'Description', type: 'DeliveredReportItem'}]
@@ -39,7 +40,7 @@ describe ReportCreator do
   end
 
   it 'raises error when creating a report with no items' do
-    user = create :user
+    user = create :user, :employed
     attributes = {type: 'MorningReport', items: []}
 
     expect do
