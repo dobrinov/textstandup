@@ -26,6 +26,10 @@
             td.users-table-name-col
               = employee.full_name
 
+            td.users-table-slack-col
+              - if employee.company.slack_installed? && employee.slack_handle.present?
+                = icon 'fab', 'slack', title: "@#{employee.slack_handle}", class: 'js-tooltip'
+
             td.users-table-subscription-col
               - if employee == current_user
                 / Do not show button
