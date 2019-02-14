@@ -26,4 +26,16 @@ describe InvitationLinkExecutor do
       InvitationLinkExecutor.execute invitation_link, user
     end.to change(invitation_link, :invited_user).from(nil).to(user)
   end
+
+  it 'abadons user company if he belongs to one and accept the invitation' do
+    existing_company = create :company, name: 'Existing Inc'
+    invitation_company = create :company, name: 'Invitation Inc'
+    invitation_link = create :invitation_link, company: invitation_company
+
+    user = create :user, company: existing_company
+
+    expect do
+      InvitationLinkExecutor.execute invitation_link, user
+    end.to change { user.company }.from(existing_company).to(invitation_company)
+  end
 end
