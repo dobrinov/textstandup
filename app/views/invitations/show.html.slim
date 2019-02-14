@@ -11,7 +11,7 @@
           =< link_to 'Cancel', root_path, class: 'btn btn-outline-secondary'
 
         - else
-          p.card-text #{@invitation_link.inviting_user.full_name} would like you to join the "#{@invitation_link.company.name}" company. To do so you have to sign up or log in to an existing one.
+          p.card-text #{@invitation_link.inviting_user.full_name} would like you to join the "#{@invitation_link.company.name}" company. Please, log in or sign up to accept the invitation.
 
           = link_to 'Sign up', new_user_registration_path(redirect_to: @current_path), class: 'btn btn-primary'
           =< link_to 'Log in', new_user_session_path(redirect_to: @current_path), class: 'btn btn-outline-secondary'
