@@ -1,6 +1,4 @@
 class SlackNotifier
-  User = Struct.new :id, :full_name, :username, :avatar_url, keyword_init: true
-
   class << self
     def execute(report)
       new(report).execute
@@ -13,33 +11,33 @@ class SlackNotifier
   end
 
   def execute
-    sender = slack_user_by_username @report.user.slack_handle
+    return unless slack_installed?
+    return unless sender.slack_handle.present?
 
-    return unless sender.present?
-
-    @report.user.followers.each do |follower|
-      recipient = slack_user_by_username follower.slack_handle
-
-      next unless recipient.present?
-
-      @slack.send_message receiver_channel: recipient.id, attachments: attachments(sender)
-    end
+    sender.followers.each { |follower| send_notification_to follower }
   end
 
   private
 
-  def slack_user_by_username(username)
-    slack_user = @slack.find_user_by username
-
-    return unless slack_user.present?
-
-    User.new id: slack_user.id,
-             full_name: slack_user.profile.real_name,
-             username: slack_user.profile.display_name,
-             avatar_url: slack_user.profile.image_48
+  def sender
+    @report.user
   end
 
-  def attachments(sender)
+  def slack_installed?
+    @report.user.company.slack_installed?
+  end
+
+  def send_notification_to(recipient)
+    return unless recipient.slack_handle.present?
+
+    unless recipient.slack_direct_message_channel.present?
+      recipient.update! slack_direct_message_channel: @slack.direct_message_channel_for(recipient.slack_handle)
+    end
+
+    @slack.send_message channel: recipient.slack_direct_message_channel, attachments: attachments
+  end
+
+  def attachments
     items = @report.items.group_by &:type
 
     attachments =
@@ -51,13 +49,17 @@ class SlackNotifier
           section.merge({fields: fields})
         end
 
-    [author_attachment(sender)] + attachments
+    [author_attachment] + attachments
   end
 
-  def author_attachment(sender)
+  def author_attachment
+    unless sender.slack_avatar_url.present?
+      sender.update! slack_avatar_url: @slack.find_workspace_member_by(sender.slack_handle).profile.image_48
+    end
+
     {
       author_name: sender.full_name,
-      author_icon: sender.avatar_url,
+      author_icon: sender.slack_avatar_url,
     }
   end
 

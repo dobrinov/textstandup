@@ -18,7 +18,7 @@ module ReportCreator
       end
     end
 
-    NotifySubscribers.execute report
+    SlackNotifier.execute report
 
     report
   end

@@ -286,12 +286,14 @@ CREATE TABLE public.users (
     last_sign_in_at timestamp without time zone,
     current_sign_in_ip inet,
     last_sign_in_ip inet,
-    manager_id bigint,
-    company_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     time_zone character varying DEFAULT 'UTC'::character varying NOT NULL,
-    slack_handle character varying
+    slack_handle character varying,
+    manager_id integer,
+    company_id integer,
+    slack_direct_message_channel character varying,
+    slack_avatar_url character varying
 );
 
 
@@ -527,24 +529,10 @@ CREATE UNIQUE INDEX index_subscriptions_on_follower_id_and_followee_id ON public
 
 
 --
--- Name: index_users_on_company_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_company_id ON public.users USING btree (company_id);
-
-
---
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
-
-
---
--- Name: index_users_on_manager_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_manager_id ON public.users USING btree (manager_id);
 
 
 --
@@ -644,6 +632,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181210202708'),
 ('20190130065924'),
 ('20190205221027'),
-('20190205225850');
+('20190205225850'),
+('20190215204441');
 
 
