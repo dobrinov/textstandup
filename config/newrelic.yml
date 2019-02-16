@@ -1,0 +1,15 @@
+common: &default_settings
+  license_key: 21d4263c447e97c22bc857d2942bb0963f5a1a02
+  app_name: Textstandup
+  log_level: info
+
+development:
+  <<: *default_settings
+  app_name: Textstandup (Development)
+
+test:
+  <<: *default_settings
+  monitor_mode: false
+
+production:
+  <<: *default_settings
