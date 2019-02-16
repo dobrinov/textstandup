@@ -38,7 +38,6 @@ class TextStandup.Views.NewReport extends Backbone.View
     @render()
 
   templateContext: ->
-    console.log @deliveryReport
     {
       button: {
         visible: @buttonVisible,
