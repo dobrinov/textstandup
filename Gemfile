@@ -8,6 +8,7 @@ gem 'dotenv-rails'
 gem 'active_attr'
 gem 'bootsnap', require: false
 gem 'coffee-rails'
+gem 'config'
 gem 'devise'
 gem 'draper'
 gem 'font-awesome-sass'
