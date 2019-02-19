@@ -2,9 +2,7 @@ class ReportsController < ApplicationController
   before_action :redirect_if_no_company
 
   def index
-    @reports = ReportSubscriptions.all current_user
-    @morning_report = ReportToJson.execute MorningReport.new(user: current_user), current_user, edited: true
-    @delivery_report = ReportToJson.execute DeliveryReport.new(user: current_user), current_user, edited: true
+    @feed = Feed.new user: current_user, selected_date: params[:date]
   end
 
   def create

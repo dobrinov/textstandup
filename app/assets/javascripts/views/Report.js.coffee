@@ -16,6 +16,7 @@ class TextStandup.Views.Report extends Backbone.View
     'click .js-item .js-delete-btn':           'onDeleteItemBtnClick'
 
   initialize: ->
+    @$el.attr 'initialized', ''
     @report = @reportInitialState = @$el.data 'report'
 
     @actionsToggled = false
@@ -301,8 +302,6 @@ class TextStandup.Views.Report extends Backbone.View
         item.form.visible = false
 
   submitReport: (items) ->
-    @$el.trigger 'submit'
-
     data = {report: {items: items, type: @report.type}}
 
     $.ajax @report.submit_path,
@@ -311,6 +310,8 @@ class TextStandup.Views.Report extends Backbone.View
            dataType: 'json'
            contentType: 'application/json'
            success: (report, textStatus, jqXHR) =>
+             @$el.trigger 'submit', report
+             @$el.data 'report', report
              @report = report
              @bodyContext = @initBodyContext(@report)
              @report.edited = false
