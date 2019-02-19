@@ -22,7 +22,7 @@ window.TextStandup =
       [name, selector] = _.pairs(object.wrapFor)[0]
 
       element = $(element)
-      elements = element.find(selector)
+      elements = element.find "#{selector}:not([initialized])"
       elements = elements.add(element) if element.is(selector)
 
       elements.each ->

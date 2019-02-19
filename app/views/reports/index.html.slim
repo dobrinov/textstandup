@@ -18,9 +18,20 @@
         = link_to 'Subscribe', employees_path, class: 'btn btn-outline-primary'
 
 
-.row.justify-content-xl-center.mb-3
+.row.justify-content-xl-center
   .col-xl-6
-    .new-report.js-new-report.mb-3 data-morning-report=@morning_report data-delivery-report=@delivery_report
+    .feed.js-feed data-initialize=@feed.to_json
 
-    - @reports.each do |report|
-      .report.js-report data-report=report
+
+.row.justify-content-xl-center.mb-3.text-center
+  .col-xl-6
+    .btn-group
+      - if @feed.next_date.present?
+        = link_to @feed.next_date_path, class: 'btn btn-outline-secondary' do
+          = icon 'fas', 'arrow-left'
+
+      = link_to @feed.selected_date, '#', class: 'btn btn-outline-secondary'
+
+      - if @feed.prev_date.present?
+        = link_to @feed.prev_date_path, class: 'btn btn-outline-secondary' do
+          = icon 'fas', 'arrow-right'
