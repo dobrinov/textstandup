@@ -64,9 +64,13 @@ class TextStandup.Views.Feed extends Backbone.View
 
   onReportCancel: (event) ->
     event.preventDefault()
-    @posterVisible = true
+    @posterVisible = @reports.length == 0
+    @posterNewReportBtnVisible = @postingEnabled && @posterVisible
+    @newReportDialogVisible = false
+    @newReportBtnVisible = true
     @newMorningReportDialogVisible = false
     @newDeliveryReportDialogVisible = false
+
     @render()
 
   template: Handlebars.compile '''
