@@ -8,6 +8,12 @@
   position: relative;
   margin-bottom: 1rem;
   display: none;
+
+  .item {
+    .item-body {
+      word-wrap: break-word;
+    }
+  }
 }
 
 .report-header {
@@ -98,23 +104,6 @@
 
     .form-group:last-child {
       margin-bottom: 0;
-    }
-  }
-}
-
-.report-edited {
-  li {
-    overflow-wrap: break-word;
-
-    .item-body {
-      position: relative;
-      padding-right: 5rem;
-
-      .btn-group {
-        position: absolute;
-        top: 0;
-        right: 0;
-      }
     }
   }
 }
