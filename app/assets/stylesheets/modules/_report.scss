@@ -16,6 +16,23 @@
   }
 }
 
+.report-edited {
+  li {
+    overflow-wrap: break-word;
+
+    .item-body {
+      position: relative;
+      padding-right: 5rem;
+
+      .btn-group {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+  }
+}
+
 .report-header {
   margin-bottom: 1rem;
   position: relative;
