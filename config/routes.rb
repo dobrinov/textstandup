@@ -26,5 +26,5 @@ Rails.application.routes.draw do
     end
   end
 
-  root to: 'reports#index'
+  root to: 'static_pages#landingpage'
 end

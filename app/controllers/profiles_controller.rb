@@ -17,7 +17,7 @@ class ProfilesController < ApplicationController
     current_user.destroy
     sign_out :user
 
-    redirect_to root_path
+    redirect_to new_user_registration_path
   end
 
   private

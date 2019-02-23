@@ -1,0 +1,69 @@
+.jumbo
+  nav.navbar.navbar-expand-lg
+    = link_to root_path, class: 'navbar-brand' do
+      = image_tag 'logo_with_text.svg'
+
+    ul.navbar-nav.ml-auto
+      li.nav-item = link_to 'Sign in', new_user_session_path, class: 'btn btn-outline-light'
+
+  .container-fluid
+    .row.justify-content-xl-center
+      .col-xl-6
+        .pitch
+          h1 Text based stand-ups.
+          p Efficiently communicate progress with your team mates.
+          p Asynchronous. Documented. Focused.
+          = link_to 'Sign up', new_user_registration_path, class: 'btn btn-lg btn-primary'
+
+    .row.justify-content-md-center
+      .col-md-6
+        .window
+          .window-header
+            .dot.dot-red
+            .dot.dot-orange
+            .dot.dot-green
+
+          .window-body
+            = image_tag 'demo.svg'
+
+.selling-points
+  .container-fluid
+    .row.justify-content-xl-center
+      .col-md-3
+        .selling-point
+          = icon 'far', 'clock'
+          h2 Time zone friendly
+          p Works well for remote teams. No need to look for a siutable time slot for all time zones anymore. Anyone can leave an update at any time.
+
+      .col-md-3
+        .selling-point
+          = icon 'far', 'calendar-check'
+          h2 Self organisation
+          p Makes you think about what you want to acheive during the day. Having a plan will help you be more focused.
+
+      .col-md-3
+        .selling-point
+          = icon 'fas', 'shoe-prints'
+          h2 Leaves trace
+          p You can always go back and check what you or a colleague of yours did the past day, week, month or even year.
+
+    .row.justify-content-xl-center
+      .col-md-3
+        .selling-point
+          = icon 'fas', 'cat'
+          h2 Slacker unfriendly
+          p It is more difficult to give abstract updates. Having it written down provides a better overview of the work a person has done (or hasn't).
+
+      .col-md-3
+        .selling-point
+          = icon 'far', 'dot-circle'
+          h2 Keeps you focused
+          p Distractions or getting into too many details are the usual reasons for long stand-ups. This is not possible here.
+
+      .col-md-3
+        .selling-point
+          = icon 'fas', 'code'
+          h2 More time for coding
+          p A 15 minute stand-up meeting takes 15 minutes per employee. A 5 minute text update takes only 5 minutes per employee.
+
+footer = image_tag 'logo.svg'

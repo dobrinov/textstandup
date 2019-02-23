@@ -11,35 +11,31 @@ html
 
   body
     nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.mb-3
-      = link_to root_path, class: 'navbar-brand' do
+      = link_to reports_path, class: 'navbar-brand' do
         = image_tag 'logo_with_text.svg'
 
       button.navbar-toggler data-toggle="collapse" data-target="#navigation"
         span.navbar-toggler-icon
 
-      .collapse.navbar-collapse#navigation
-        - if user_signed_in?
-          ul.navbar-nav.mr-auto
-            li.nav-item
-              = link_to 'Feed', reports_path, class: 'nav-link'
-            li.nav-item
-              = link_to 'People', employees_path, class: 'nav-link'
-
-            - if current_user.company && current_user.company.administrated_by?(current_user)
+      - if user_signed_in?
+        - if current_user.company.present?
+          .collapse.navbar-collapse#navigation
+            ul.navbar-nav.mr-auto
               li.nav-item
-                = link_to 'Company', company_path, class: 'nav-link'
-
+                = link_to 'Feed', reports_path, class: 'nav-link'
               li.nav-item
-                = link_to 'Integrations', integrations_path, class: 'nav-link'
+                = link_to 'People', employees_path, class: 'nav-link'
+
+              - if current_user.company && current_user.company.administrated_by?(current_user)
+                li.nav-item
+                  = link_to 'Company', company_path, class: 'nav-link'
+
+                li.nav-item
+                  = link_to 'Integrations', integrations_path, class: 'nav-link'
 
         ul.navbar-nav.ml-auto
-          - if user_signed_in?
-            li.nav-item = link_to current_user.full_name, profile_path, class: 'nav-link'
-            li.nav-item = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link'
-
-          - else
-            li.nav-item = link_to 'Log in', new_user_session_path, class: 'nav-link'
-            li.nav-item = link_to 'Sign up', new_user_registration_path, class: 'nav-link'
+          li.nav-item = link_to current_user.full_name, profile_path, class: 'nav-link'
+          li.nav-item = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link'
 
 
     .container-fluid
