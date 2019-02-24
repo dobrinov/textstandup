@@ -9,6 +9,5 @@ window.TextStandup.Tracking =
                                    data.value
 
   track: (category, action, label, value) ->
-    console.log category, action, label, value
     return false unless ga?
     ga 'send', 'event', category, action, label, value
