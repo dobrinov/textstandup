@@ -1,3 +1,5 @@
+- set_meta_tags title: 'Feed'
+
 - if current_user.company.administrated_by?(current_user) && current_user.company.employees.one?
   .row.justify-content-xl-center.text-center
     .col-xl-6
