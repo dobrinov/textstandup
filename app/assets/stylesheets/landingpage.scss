@@ -72,8 +72,16 @@
 }
 
 footer {
+  .social-links {
+    a {
+      &:hover { color: #cccccc; }
+      color: #ffffff;
+      font-size: 26px;
+      margin: 0 10px;
+    }
+  }
+
   padding: 1rem;
   text-align: center;
   background-color: #222222;
-  img { width: 40px; }
 }

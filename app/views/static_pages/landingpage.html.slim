@@ -70,4 +70,10 @@
           h2 More time for coding
           p A 15 minute stand-up meeting takes 15 minutes per employee. A 5 minute text update takes only 5 minutes per employee.
 
-footer = image_tag 'logo.svg'
+footer
+  .social-links
+    = link_to 'https://www.facebook.com/textstandup', target: '_blank' do
+      = icon 'fab', 'facebook-square'
+
+    = link_to 'https://twitter.com/textstandup', target: '_blank' do
+      = icon 'fab', 'twitter'
