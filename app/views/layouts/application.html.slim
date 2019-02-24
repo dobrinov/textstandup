@@ -18,9 +18,9 @@ html
       button.navbar-toggler data-toggle="collapse" data-target="#navigation"
         span.navbar-toggler-icon
 
-      - if user_signed_in?
-        - if current_user.company.present?
-          .collapse.navbar-collapse#navigation
+      .collapse.navbar-collapse#navigation
+        - if user_signed_in?
+          - if current_user.company.present?
             ul.navbar-nav.mr-auto
               li.nav-item
                 = link_to 'Feed', reports_path, class: 'nav-link'
@@ -34,9 +34,9 @@ html
                 li.nav-item
                   = link_to 'Integrations', integrations_path, class: 'nav-link'
 
-        ul.navbar-nav.ml-auto
-          li.nav-item = link_to current_user.full_name, profile_path, class: 'nav-link'
-          li.nav-item = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link'
+          ul.navbar-nav.ml-auto
+            li.nav-item = link_to current_user.full_name, profile_path, class: 'nav-link'
+            li.nav-item = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link'
 
 
     .container-fluid
