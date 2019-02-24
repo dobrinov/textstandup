@@ -3,6 +3,7 @@ module InvitationLinkExecutor
 
   def execute(invitation_link, user)
     ActiveRecord::Base.transaction do
+      user.reports.destroy_all
       user.employment.destroy! if user.company.present?
 
       Employment.create! user: user, company: invitation_link.company, admin: false
