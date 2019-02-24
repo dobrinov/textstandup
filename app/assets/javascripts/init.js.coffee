@@ -2,8 +2,9 @@ window.TextStandup =
   Views: {}
 
   initialize: ->
-    TextStandup.initializeElement(document)
-    TextStandup.Tooltip.initialize(document)
+    TextStandup.initializeElement document
+    TextStandup.Tooltip.initialize document
+    TextStandup.Tracking.initialize document
 
   initializeElement: (element) ->
     @initializeViews(element)

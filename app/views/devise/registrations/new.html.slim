@@ -13,10 +13,10 @@
           = form.input :last_name, label: 'Surname', placeholder: 'e.g., Doe'
           = form.input :password, as: :password, placeholder: 'e.g., **********'
           = form.input :password_confirmation, as: :password, placeholder: 'Repeat your password'
-          = form.submit 'Sign up', class: 'btn btn-primary btn-block'
+          = form.submit 'Sign up', class: 'btn btn-primary btn-block js-tracked', data: {category: 'Sign up', action: 'Form submitted'}
 
     .text-center.mb-3 or
 
-    = link_to user_google_oauth2_omniauth_authorize_path, class: 'btn btn-google btn-lg btn-block' do
+    = link_to user_google_oauth2_omniauth_authorize_path, class: 'btn btn-google btn-lg btn-block js-tracked', data: {category: 'Sign up', action: 'Sign up with Google pressed'} do
       = render 'shared/google'
       span Sign up with Google
