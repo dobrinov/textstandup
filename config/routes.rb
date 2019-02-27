@@ -26,5 +26,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get :text_based_standups, to: 'static_pages#text_based_standups'
+
   root to: 'static_pages#landingpage'
 end

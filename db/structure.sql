@@ -172,7 +172,8 @@ CREATE TABLE public.report_items (
     type public.report_item_type NOT NULL,
     report_id bigint,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    url character varying
 );
 
 
@@ -633,6 +634,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190130065924'),
 ('20190205221027'),
 ('20190205225850'),
-('20190215204441');
+('20190215204441'),
+('20190227203134');
 
 

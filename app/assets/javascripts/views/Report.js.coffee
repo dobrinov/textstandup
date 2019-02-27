@@ -90,6 +90,7 @@ class TextStandup.Views.Report extends Backbone.View
       id: id,
       title: title,
       description: description,
+      descriptionMarkdown: @markdownToHtml(description),
       actions: {
         visible: actionsVisible
       },
@@ -256,6 +257,7 @@ class TextStandup.Views.Report extends Backbone.View
     if item.form.title.valid && item.form.description.valid
       item.title = title
       item.description = description
+      item.descriptionMarkdown = @markdownToHtml(description)
       @submitEnabled = true
       @closeAllForms()
       @resetForm item.form
@@ -331,6 +333,21 @@ class TextStandup.Views.Report extends Backbone.View
            error: (jqXHR, textStatus, errorThrown) =>
              alert 'Save unsuccessul. Please, try again!'
 
+  markdownToHtml: (value) ->
+    rules = [
+      [/(\b(https?|):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, '<a href="$1" target="_blank">$1</a>'],
+      [/~([a-zA-Z0-9\s]+)~/ig, '<s>$1</s>']
+      [/\*([a-zA-Z0-9\s]+)\*/ig, '<strong>$1</strong>'],
+      [/`([a-zA-Z0-9\s]+)`/ig, '<code>$1</code>'],
+      [/\n(.*)$/ig, '<p>$1</p>'],
+      [/(.*)\n/ig, '<p>$1</p>']
+    ]
+
+    _.each rules, (rule) ->
+      value = value.replace rule[0], rule[1]
+
+    value
+
   headerTemplate: Handlebars.compile '''
     <div class="report-header">
       <div class="avatar">{{user.initials}}</div>
@@ -369,7 +386,7 @@ class TextStandup.Views.Report extends Backbone.View
               {{#each items}}
                 <li class="item js-item" data-id="{{id}}" data-persisted="{{persisted}}">
                   {{# if form.visible}}
-                    {{> form class="js-edit-item-form" submitBtnText="Update"}}
+                    {{~> form class="js-edit-item-form" submitBtnText="Update"}}
                   {{else}}
                     <div class="item-body">
                       {{#if actions.visible}}
@@ -384,14 +401,14 @@ class TextStandup.Views.Report extends Backbone.View
                       {{/if}}
 
                       <h6>{{title}}</h6>
-                      <p>{{description}}</p>
+                      <div class="description">{{{descriptionMarkdown}}}</div>
                     </div>
                   {{/if}}
                 </li>
               {{/each}}
 
               {{#if newItem.form.visible}}
-                {{> form class="js-new-item-form" form=newItem.form}}
+                {{~> form class="js-new-item-form" form=newItem.form}}
               {{/if}}
 
               {{#if newItem.button.visible}}
@@ -423,6 +440,11 @@ class TextStandup.Views.Report extends Backbone.View
           {{#unless form.description.valid}}
             <div class="invalid-feedback">can't be blank</div>
           {{/unless}}
+          <div class="md-hints">
+            <strong>*bold*</strong>
+            ~<s>strike</s>~
+            <code>`code`</code>
+          </div>
         </div>
 
         <div class="form-group">
