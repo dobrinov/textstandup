@@ -27,6 +27,7 @@ module ReportToJson
       {
         id: item.id,
         title: item.title,
+        url: item.url,
         description: item.description,
         type: item.type,
       }
@@ -56,6 +57,9 @@ module ReportToJson
         title: {
           placeholder: 'Summarize what was delivered'
         },
+        url: {
+          placeholder: 'Link to place containing more information about the task'
+        },
         description: {
           placeholder: 'Provide some information on what was delivered and what was the need for it'
         },
@@ -67,6 +71,9 @@ module ReportToJson
         heading: 'Current progress',
         title: {
           placeholder: 'Few words describing the task on which you are working'
+        },
+        url: {
+          placeholder: 'Link to place containing more information about the task'
         },
         description: {
           placeholder: 'What is your progress on this task and what is left of it?'
@@ -80,6 +87,9 @@ module ReportToJson
         title: {
           placeholder: 'Few words describing the task on which you are planning to work'
         },
+        url: {
+          placeholder: 'Link to place containing more information about the task'
+        },
         description: {
           placeholder: 'What do you plan to achieve today?'
         },
@@ -92,6 +102,9 @@ module ReportToJson
         title: {
           placeholder: 'Few words describing a blocked task'
         },
+        url: {
+          placeholder: 'Link to place containing more information about the task'
+        },
         description: {
           placeholder: 'What is blocking your progress and what needs to happen to unblock it?'
         },
@@ -103,6 +116,9 @@ module ReportToJson
         heading: 'Announcements',
         title: {
           placeholder: 'Few words summarising your announcement e.g. "Vacation"'
+        },
+        url: {
+          placeholder: 'Link to place containing more information about the task'
         },
         description: {
           placeholder: 'What do you want to announce?'

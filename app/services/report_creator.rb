@@ -11,10 +11,15 @@ module ReportCreator
 
       attributes[:items].each do |item|
         title = item.fetch :title
+        url = item[:url]
         description = item.fetch :description
         type = item.fetch :type
 
-        ReportItem.create! title: title, description: description, type: type, report: report
+        ReportItem.create! title: title,
+                           url: url,
+                           description: description,
+                           type: type,
+                           report: report
       end
     end
 

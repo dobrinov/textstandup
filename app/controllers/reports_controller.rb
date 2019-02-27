@@ -22,7 +22,7 @@ class ReportsController < ApplicationController
   def report_params
     params.
       require(:report).
-      permit(:type, items: [:id, :title, :description, :type]).
+      permit(:type, items: [:id, :title, :url, :description, :type]).
       to_h
   end
 end

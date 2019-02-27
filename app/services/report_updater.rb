@@ -10,13 +10,18 @@ module ReportUpdater
       attributes[:items].each do |item|
         id = item[:id]
         title = item.fetch :title
+        url = item[:url]
         description = item.fetch :description
         type = item[:type]
 
         if id.blank?
-          ReportItem.create! title: title, description: description, type: type, report: report
+          ReportItem.create! title: title,
+                             url: url,
+                             description: description,
+                             type: type,
+                             report: report
         else
-          report.items.where(id: id).update_all title: title, description: description
+          report.items.where(id: id).update_all title: title, url: url, description: description
         end
       end
 

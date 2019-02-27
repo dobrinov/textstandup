@@ -68,7 +68,7 @@ class TextStandup.Views.Report extends Backbone.View
       type: type,
       visible: report.edited || items.length > 0,
       heading: @report.locales[type].heading,
-      items: (_.map (items), (item) => @initItemFor(type, true, false, item.id, item.title, item.description)),
+      items: (_.map (items), (item) => @initItemFor(type, true, false, item.id, item.title, item.url, item.description)),
       newItem: {
         form: @initFormFor(type, 'new'),
         button: {
@@ -78,7 +78,7 @@ class TextStandup.Views.Report extends Backbone.View
       },
     }
 
-  initItemFor: (kind, persisted, actionsVisible, id, title, description) ->
+  initItemFor: (kind, persisted, actionsVisible, id, title, url, description) ->
     formType =
       if persisted
         'edit'
@@ -89,6 +89,7 @@ class TextStandup.Views.Report extends Backbone.View
       persisted: persisted,
       id: id,
       title: title,
+      url: url,
       description: description,
       descriptionMarkdown: @markdownToHtml(description),
       actions: {
@@ -107,6 +108,7 @@ class TextStandup.Views.Report extends Backbone.View
     {
       visible: false,
       title: {value: '', placeholder: @report.locales[itemType].title.placeholder, valid: true},
+      url: {value: '', placeholder: @report.locales[itemType].url.placeholder, valid: true},
       description: {value: '', placeholder: @report.locales[itemType].description.placeholder, valid: true},
       submit: {text: submitText},
     }
@@ -160,6 +162,7 @@ class TextStandup.Views.Report extends Backbone.View
             {
               id: (if item.persisted then item.id else null),
               title: item.title,
+              url: item.url,
               description: item.description,
               type: section.type
             })
@@ -202,6 +205,7 @@ class TextStandup.Views.Report extends Backbone.View
     section.newItem.button.visible = false
     item.form.visible = true
     item.form.title.value = item.title
+    item.form.url.value = item.url
     item.form.description.value = item.description
 
     @render()
@@ -221,18 +225,20 @@ class TextStandup.Views.Report extends Backbone.View
 
     $form = $(event.target).closest 'form'
     title = $form.find('.js-title-input').val()
+    url = $form.find('.js-url-input').val()
     description = $form.find('.js-description-input').val()
 
     section = @sectionFromEvent event
     id = "tmp_#{@unpersistedItemsCount() + 1}"
     item = section.newItem
     item.form.title.value = title
+    item.form.url.value = url
     item.form.description.value = description
     item.form.title.valid = !!item.form.title.value
     item.form.description.valid = !!item.form.description.value
 
     if item.form.title.valid && item.form.description.valid
-      section.items.push @initItemFor(section.type, false, true, id, title, description)
+      section.items.push @initItemFor(section.type, false, true, id, title, url, description)
       @submitEnabled = true
       @closeAllForms()
       @resetForm item.form
@@ -244,18 +250,21 @@ class TextStandup.Views.Report extends Backbone.View
 
     $form = $(event.target).closest 'form'
     title = $form.find('.js-title-input').val()
+    url = $form.find('.js-url-input').val()
     description = $form.find('.js-description-input').val()
 
     section = @sectionFromEvent event
     id = $(event.target).closest('.js-item').data('id')
     item = @item id
     item.form.title.value = title
+    item.form.url.value = url
     item.form.description.value = description
     item.form.title.valid = !!item.form.title.value
     item.form.description.valid = !!item.form.description.value
 
     if item.form.title.valid && item.form.description.valid
       item.title = title
+      item.url = url
       item.description = description
       item.descriptionMarkdown = @markdownToHtml(description)
       @submitEnabled = true
@@ -282,6 +291,7 @@ class TextStandup.Views.Report extends Backbone.View
 
   resetForm: (form) ->
     form.title.value = null
+    form.url.value = null
     form.description.value = null
     form.title.valid = true
     form.description.valid = true
@@ -401,6 +411,7 @@ class TextStandup.Views.Report extends Backbone.View
                       {{/if}}
 
                       <h6>{{title}}</h6>
+                      <a class="url" href="{{url}}" target="_blank">{{url}}</a>
                       <div class="description">{{{descriptionMarkdown}}}</div>
                     </div>
                   {{/if}}
@@ -432,6 +443,11 @@ class TextStandup.Views.Report extends Backbone.View
           {{#unless form.title.valid}}
             <div class="invalid-feedback">can't be blank</div>
           {{/unless}}
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label">Ticket URL</label>
+          <input class="form-control js-url-input type="text" value="{{form.url.value}}" placeholder="{{form.url.placeholder}}">
         </div>
 
         <div class="form-group required">

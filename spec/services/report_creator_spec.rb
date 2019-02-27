@@ -7,10 +7,10 @@ describe ReportCreator do
     attributes = {
       type: 'MorningReport',
       items: [
-        {title: 'Title', description: 'Description', type: 'OngoingReportItem'},
-        {title: 'Title', description: 'Description', type: 'PlannedReportItem'},
-        {title: 'Title', description: 'Description', type: 'BlockerReportItem'},
-        {title: 'Title', description: 'Description', type: 'AnnouncementReportItem'},
+        {title: 'Title', url: 'Url', description: 'Description', type: 'OngoingReportItem'},
+        {title: 'Title', url: 'Url', description: 'Description', type: 'PlannedReportItem'},
+        {title: 'Title', url: 'Url', description: 'Description', type: 'BlockerReportItem'},
+        {title: 'Title', url: 'Url', description: 'Description', type: 'AnnouncementReportItem'},
       ]
     }
 
@@ -27,7 +27,7 @@ describe ReportCreator do
     user = create :user, :employed
     attributes = {
       type: 'MorningReport',
-      items: [{title: 'Title', description: 'Description', type: 'DeliveredReportItem'}]
+      items: [{title: 'Title', url: 'Url', description: 'Description', type: 'DeliveredReportItem'}]
     }
 
     Report.count.should eq 0
