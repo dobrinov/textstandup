@@ -1,5 +1,5 @@
 - set_meta_tags title: "Join \"#{@invitation_link.company.name}\" on Textstandup",
-                description: "#{@invitation_link.inviting_user.full_name} would like you to join the #{@invitation_link.company.name} company."
+                description: "#{@invitation_link.inviting_user.full_name} would like you to join \"#{@invitation_link.company.name}\"."
 
 .row.justify-content-xl-center
   .col-xl-6
@@ -8,13 +8,13 @@
     .card.mb-3
       .card-body
         - if user_signed_in?
-          p.card-text #{@invitation_link.inviting_user.full_name} would like you to join the "#{@invitation_link.company.name}" company.
+          p.card-text #{@invitation_link.inviting_user.full_name} would like you to join "#{@invitation_link.company.name}".
 
           = link_to 'Join company', use_invitation_path(code: @invitation_link.code), method: :patch, class: 'btn btn-primary'
           =< link_to 'Cancel', root_path, class: 'btn btn-outline-secondary'
 
         - else
-          p.card-text #{@invitation_link.inviting_user.full_name} would like you to join the "#{@invitation_link.company.name}" company. Please, log in or sign up to accept the invitation.
+          p.card-text #{@invitation_link.inviting_user.full_name} would like you to join "#{@invitation_link.company.name}". Please, log in or sign up to accept the invitation.
 
           = link_to 'Sign up', new_user_registration_path(redirect_to: @current_path), class: 'btn btn-primary'
           =< link_to 'Log in', new_user_session_path(redirect_to: @current_path), class: 'btn btn-outline-secondary'
