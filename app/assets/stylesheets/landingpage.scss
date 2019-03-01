@@ -72,6 +72,11 @@
 }
 
 footer {
+  .links {
+    a { color: #cccccc; }
+    margin-bottom: 1rem;
+  }
+
   .social-links {
     a {
       &:hover { color: #cccccc; }
