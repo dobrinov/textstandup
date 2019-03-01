@@ -50,7 +50,6 @@ class TextStandup.Views.Feed extends Backbone.View
     @reports = _.reject @reports, (report) -> submittedReport.id == JSON.parse(report).id
 
     if submittedReport.items.length > 0
-      console.log 'in'
       @reports.unshift JSON.stringify(submittedReport)
 
     @posterVisible = @reports.length == 0
