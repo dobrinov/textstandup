@@ -16,14 +16,14 @@ class User < ApplicationRecord
 
   class << self
     def from_omniauth(access_token)
-      data = access_token.info
-      user = User.find_by email: data['email']
+      email = access_token['extra']['id_info']['email']
+      user = User.find_by email: email
 
       return user if user.present?
 
-      create! email: data['email'],
-              first_name: data['first_name'],
-              last_name: data['last_name'],
+      create! email: email,
+              first_name: access_token.info['first_name'],
+              last_name: access_token.info['last_name'],
               password: Devise.friendly_token[0,20]
     end
   end
