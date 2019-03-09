@@ -10,7 +10,7 @@
     .list-group.mb-3
       .list-group-item
         = simple_form_for resource, as: resource_name, url: registration_path(resource_name) do |form|
-          = form.input :email, placeholder: 'e.g., john.doe@example.com'
+          = form.input :email, as: :email, placeholder: 'e.g., john.doe@example.com'
           = form.input :first_name, label: 'Name', placeholder: 'e.g., John'
           = form.input :last_name, label: 'Surname', placeholder: 'e.g., Doe'
           = form.input :password, as: :password, placeholder: 'e.g., **********'
