@@ -22,8 +22,9 @@ gem 'puma'
 gem 'sass-rails'
 gem 'simple_form'
 gem 'slack-ruby-client'
-gem "slim-rails"
+gem 'slim-rails'
 gem 'uglifier'
+gem 'webpacker'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
