@@ -1,0 +1,55 @@
+.container {
+  position: relative;
+  text-align: left;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  background-color: #fff;
+  display: block;
+  padding: 0;
+  margin: 0 0 1rem 0;
+
+  header {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+  }
+
+  footer {
+    margin: 0;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+    background-color: #f9f9f9;
+    border-radius: 0 0 0.25rem 0.25rem;
+  }
+}
+
+.avatar {
+  width: 2.7rem;
+  height: 2.7rem;
+}
+
+.details {
+  vertical-align: middle;
+  padding: 0 0.5rem;
+  flex-grow: 1;
+
+  h3 {
+    font-size: 15px;
+    font-weight: bold;
+    padding: 0;
+    margin: 0 0 0.15rem 0;
+    line-height: 1;
+    display: block;
+  }
+
+  span {
+    display: block;
+    line-height: 1;
+    font-size: 12px;
+    color: #999;
+  }
+}
+
+.content {
+  padding: 0 1.25rem;
+}

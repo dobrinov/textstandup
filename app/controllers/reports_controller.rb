@@ -3,6 +3,7 @@ class ReportsController < ApplicationController
 
   def index
     @feed = Feed.new user: current_user, selected_date: params[:date]
+    @feedh = @feed.to_h
   end
 
   def create

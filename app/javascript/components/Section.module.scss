@@ -1,0 +1,17 @@
+.section {
+  margin: 0 0 1rem 0;
+  padding: 0;
+
+  h5 { text-decoration: underline; margin: 0 0 0.5rem 0; }
+
+  > a {
+    display: block;
+    border: 1px dashed #cccccc;
+    padding: 0.75rem;
+    text-align: center;
+    color: #cccccc;
+    cursor: pointer;
+
+    i { font-size: 20px; color: #aaaaaa; }
+  }
+}

@@ -1,0 +1,28 @@
+.avatar {
+  position: relative;
+  width: 2.7rem;
+  height: 2.7rem;
+  line-height: 2.7rem;
+  text-align: center;
+  background-color: #444444;
+  color: #FFFFFF;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: default;
+
+  .crown {
+    position: absolute;
+    top: -1.1rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 1.4rem;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    text-align: center;
+    display: block;
+    color: #D2B100;
+    font-size: 0.6rem;
+    border-radius: 50%;
+  }
+}

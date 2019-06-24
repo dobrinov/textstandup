@@ -3,27 +3,37 @@ module ReportToJson
 
   def execute(report, viewer, edited: false)
     {
-      id: report.id,
+      key: report.id,
       submit_path: submit_path(report),
       submit_method: submit_method(report),
       published_at: published_at(report, viewer),
-      user: {
+      author: {
         initials: report.user.initials,
-        full_name: report.user.full_name,
+        name: report.user.full_name,
       },
+      sections: sections(report),
       type: report.type,
-      item_types: report.item_types,
-      items: items(report),
       editable: report.user == viewer,
       edited: edited,
-      locales: locales
-    }.to_json
+      locales: locales,
+      persisted: report.persisted?,
+    }
   end
 
   private
 
-  def items(report)
-    report.items.map do |item|
+  def sections(report)
+    report.items.map(&:type).uniq.map do |section|
+      {
+        key: "#{report.id}_#{section}",
+        title: title_for_section(section),
+        items: items(report, section)
+      }
+    end
+  end
+
+  def items(report, section)
+    report.items.where(type: section).map do |item|
       {
         id: item.id,
         title: item.title,
@@ -48,6 +58,15 @@ module ReportToJson
 
   def published_at(report, viewer)
     report.persisted? ? report.created_at.in_time_zone(viewer.time_zone).strftime('%d %b %Y at %l:%M%p') : nil
+  end
+
+  def title_for_section(section)
+    {
+      OngoingReportItem: 'Current progress',
+      PlannedReportItem: 'Plan for the day',
+      BlockerReportItem: 'Blockers',
+      AnnouncementReportItem: 'Announcements',
+    }[section.to_sym]
   end
 
   def locales

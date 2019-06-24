@@ -1,21 +1,4 @@
 .feed {
-  .empty-poster {
-    i { font-size: 60px; margin-bottom: 1rem; margin-top: 1.5rem; }
-    h5 {}
-    p {}
-    a { margin-top: 1rem; margin-bottom: 1rem; }
-  }
-
-  .reports {
-    .report {
-
-    }
-
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
   .new-report-dialog {
     > i { font-size: 60px; margin-bottom: 1rem; margin-top: 1.5rem; }
     > h5 {}
@@ -58,6 +41,4 @@
     padding: 0.75rem 1.25rem;
     color: #333333;
   }
-
-  text-align: center;
 }

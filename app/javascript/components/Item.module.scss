@@ -1,0 +1,19 @@
+.item {
+  h6 { margin: 0; }
+  a { font-size: 12px; color: #cccccc; display: block; }
+  p { margin: 0; color: #999999; }
+
+  margin: 0 0 0.5rem 0;
+  &:last-child { margin-bottom: 0; }
+  padding: 0;
+
+  form {
+    display: block;
+    border: 1px dashed #cccccc;
+    padding: 0.75rem;
+
+    label { margin-bottom: 0.25rem; }
+    abbr { color: #dc3545; text-decoration: none; margin-left: 0.15rem; }
+    > div:last-child { margin-bottom: 0; }
+  }
+}

@@ -9,16 +9,11 @@ class Feed
       end
   end
 
-  def to_json
-    {
-      reports: reports,
-      today: @selected_date == today,
-      blank_morning_report: ReportToJson.execute(MorningReport.new(user: @user), @user, edited: true),
-      blank_delivery_report: ReportToJson.execute(DeliveryReport.new(user: @user), @user, edited: true),
-    }.to_json
+  def to_h
+    {posting_allowed: posting_allowed, posts: posts}
   end
 
-  def reports
+  def posts
     followee_ids =
       Subscription.
         where(follower: @user).
@@ -30,10 +25,11 @@ class Feed
         where(created_at: beginning_of_selected_date..end_of_selected_date).
         order(created_at: :desc)
 
-    items =
-      ReportItem.where report: reports
-
     reports.map { |report| ReportToJson.execute(report, @user) }
+  end
+
+  def posting_allowed
+    @selected_date == today
   end
 
   def next_date
