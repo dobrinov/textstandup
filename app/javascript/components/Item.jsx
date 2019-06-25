@@ -7,10 +7,10 @@ class Item extends React.Component {
 
     this.state = {
       title: props.title,
-      url: props.url || '',
+      url: props.url,
       description: props.description,
       editable: props.editable,
-      inEditMode: true, //props.inEditMode,
+      inEditMode: props.inEditMode,
     }
 
     this.onTitleInput = this.onTitleInput.bind(this)

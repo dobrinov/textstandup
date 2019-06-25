@@ -8,7 +8,9 @@ class Feed extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      user: props.user,
       postingAllowed: props.postingAllowed,
+      newPostBtnVisible: true, //props.newPostBtnVisible,
       newPostTypeSelectionPromptVisible: false,
       posts: props.posts
     }
@@ -16,6 +18,8 @@ class Feed extends React.Component {
     this.onNewPostBtnClick = this.onNewPostBtnClick.bind(this)
     this.onNewMorningReportBtnClick = this.onNewMorningReportBtnClick.bind(this)
     this.onNewDeliveryReportBtnClick = this.onNewDeliveryReportBtnClick.bind(this)
+    this.onPostSubmit = this.onPostSubmit.bind(this)
+    this.onPostCancelation = this.onPostCancelation.bind(this)
   }
 
   onNewPostBtnClick(event) {
@@ -25,13 +29,13 @@ class Feed extends React.Component {
   }
 
   onNewMorningReportBtnClick(event) {
-    const post = {
+    const newPost = {
       key: 'draft',
       editable: true,
       inEditMode: true,
       author: {
-        name: 'Didko Banditko',
-        initials: 'DB',
+        name: this.state.user.name,
+        initials: this.state.user.initials,
       },
       sections: [
         {title: 'Current progress', key: 'progress', items: []},
@@ -42,19 +46,20 @@ class Feed extends React.Component {
     }
 
     this.setState({
+      newPostBtnVisible: false,
       newPostTypeSelectionPromptVisible: false,
-      posts: [post]
+      posts: [newPost, ...this.state.posts],
     })
   }
 
   onNewDeliveryReportBtnClick(event) {
-    const post = {
+    const newPost = {
       key: 'draft',
       editable: true,
       inEditMode: true,
       author: {
-        name: 'Didko Banditko',
-        initials: 'DB',
+        name: this.state.user.name,
+        initials: this.state.user.initials,
       },
       sections: [
         {title: 'Delivered', items: []},
@@ -62,13 +67,22 @@ class Feed extends React.Component {
     }
 
     this.setState({
+      newPostBtnVisible: false,
       newPostTypeSelectionPromptVisible: false,
-      posts: [post]
+      posts: [newPost, ...this.state.posts],
     })
   }
 
+  onPostSubmit(event) {
+    alert('submit')
+  }
+
+  onPostCancelation(event) {
+    alert('cancel')
+  }
+
   render() {
-    const posts =
+    let posts =
       this.state.posts.map((post) =>
         <Post key={post.key}
               author={post.author}
@@ -76,7 +90,9 @@ class Feed extends React.Component {
               sections={post.sections}
               persisted={post.persisted}
               editable={post.editable}
-              inEditMode={post.inEditMode} />
+              inEditMode={post.inEditMode}
+              onPostSubmit={this.onPostSubmit}
+              onPostCancelation={this.onPostCancelation} />
       )
 
     let header
@@ -85,7 +101,7 @@ class Feed extends React.Component {
                                            onNewDeliveryReportBtnClick={this.onNewDeliveryReportBtnClick} />
     } else {
       if(posts.length > 0) {
-        if(this.state.postingAllowed) {
+        if(this.state.newPostBtnVisible) {
           header =
             <a onClick={this.onNewPostBtnClick} href="#" className="btn btn-outline-primary btn-lg mb-3" title="Post a new report">
               <i className="fas fa-plus"></i>
@@ -93,7 +109,7 @@ class Feed extends React.Component {
         }
       } else {
         header = <EmptyFeedPoster postingAllowed={this.state.postingAllowed}
-                                  onNewPostBtnClick={this.onNewPostBtnClick}/>
+                                  onNewPostBtnClick={this.onNewPostBtnClick} />
       }
     }
 

@@ -3,7 +3,7 @@ import styles from './Section.module'
 import Item from './Item';
 
 class Section extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -24,8 +24,12 @@ class Section extends React.Component {
     $('[data-toggle="tooltip"]').tooltip()
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     $('[data-toggle="tooltip"]').tooltip()
+
+    if(prevProps.inEditMode != this.props.inEditMode) {
+      this.setState({inEditMode: this.props.inEditMode})
+    }
   }
 
   render() {

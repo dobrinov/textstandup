@@ -10,7 +10,14 @@ class Feed
   end
 
   def to_h
-    {posting_allowed: posting_allowed, posts: posts}
+    {
+      posting_allowed: posting_allowed,
+      posts: posts,
+      user: {
+        name: @user.full_name,
+        initials: @user.initials,
+      }
+    }
   end
 
   def posts

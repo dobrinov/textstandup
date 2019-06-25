@@ -3,7 +3,8 @@
 .row.justify-content-xl-center
   .col-xl-6
     = react_component 'Feed', postingAllowed: @feedh[:posting_allowed],
-                              posts: @feedh[:posts]
+                              posts: @feedh[:posts],
+                              user: @feedh[:user]
 
 .row.justify-content-xl-center.mb-3.text-center
   .col-xl-6
