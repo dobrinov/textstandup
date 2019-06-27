@@ -30,7 +30,7 @@ class Feed extends React.Component {
 
   onNewMorningReportBtnClick(event) {
     const newPost = {
-      key: 'draft',
+      id: 'draft',
       editable: true,
       inEditMode: true,
       author: {
@@ -54,7 +54,7 @@ class Feed extends React.Component {
 
   onNewDeliveryReportBtnClick(event) {
     const newPost = {
-      key: 'draft',
+      id: 'draft',
       editable: true,
       inEditMode: true,
       author: {
@@ -77,14 +77,21 @@ class Feed extends React.Component {
     alert('submit')
   }
 
-  onPostCancelation(event) {
-    alert('cancel')
+  onPostCancelation(event, id, persisted) {
+    if(!persisted) {
+      this.setState({
+        newPostBtnVisible: true,
+        newPostTypeSelectionPromptVisible: false,
+        posts: this.state.posts.filter(el => el.id != id)
+      })
+    }
   }
 
   render() {
     let posts =
       this.state.posts.map((post) =>
-        <Post key={post.key}
+        <Post key={post.id}
+              id={post.id}
               author={post.author}
               publishedAt={post.published_at}
               sections={post.sections}

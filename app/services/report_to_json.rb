@@ -3,7 +3,7 @@ module ReportToJson
 
   def execute(report, viewer, edited: false)
     {
-      key: report.id,
+      id: report.id,
       submit_path: submit_path(report),
       submit_method: submit_method(report),
       published_at: published_at(report, viewer),
@@ -40,6 +40,7 @@ module ReportToJson
         url: item.url,
         description: item.description,
         type: item.type,
+        persisted: true,
       }
     end
   end

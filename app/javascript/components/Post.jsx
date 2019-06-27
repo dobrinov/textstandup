@@ -10,6 +10,7 @@ class Post extends React.Component {
     super(props)
 
     this.state = {
+      id: props.id,
       author: props.author,
       editable: props.editable,
       inEditMode: props.inEditMode,
@@ -48,7 +49,7 @@ class Post extends React.Component {
       actionsExpanded: false,
     })
 
-    this.props.onPostCancelation(event)
+    this.props.onPostCancelation(event, this.state.id, this.state.persisted)
   }
 
   render() {

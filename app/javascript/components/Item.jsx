@@ -1,5 +1,6 @@
 import React from "react"
 import styles from './Item.module'
+import Input from './Input';
 
 class Item extends React.Component {
   constructor (props) {
@@ -9,37 +10,62 @@ class Item extends React.Component {
       title: props.title,
       url: props.url,
       description: props.description,
+      persisted: props.persisted,
       editable: props.editable,
       inEditMode: props.inEditMode,
     }
 
-    this.onTitleInput = this.onTitleInput.bind(this)
-    this.onUrlInput = this.onUrlInput.bind(this)
-    this.onDescriptionInput = this.onDescriptionInput.bind(this)
+    this.onTitleChange = this.onTitleChange.bind(this)
+    this.onUrlChange = this.onUrlChange.bind(this)
+    this.onDescriptionChange = this.onDescriptionChange.bind(this)
     this.onSubmitBtnClick = this.onSubmitBtnClick.bind(this)
     this.onCancelBtnClick = this.onCancelBtnClick.bind(this)
   }
 
-  onTitleInput (event) {
-    this.setState({title: event.target.value})
+  onTitleChange(value) {
+    this.setState({title: value})
   }
 
-  onUrlInput (event) {
-    this.setState({url: event.target.value})
+  onUrlChange(value) {
+    this.setState({url: value})
   }
 
-  onDescriptionInput (event) {
-    this.setState({description: event.target.value})
+  onDescriptionChange(value) {
+    this.setState({description: value})
   }
 
-  onSubmitBtnClick (event) {
+  onSubmitBtnClick(event) {
     event.preventDefault()
-    alert('submit')
+
+    const titleValid = this.state.title && this.state.title.length > 0
+    const descriptionValid = this.state.description && this.state.description.length > 0
+
+    if (!titleValid) {
+      this.setState({titleError: 'can\'t be empty'})
+    }
+
+    if (!descriptionValid) {
+      this.setState({descriptionError: 'can\'t be empty'})
+    }
+
+    if (titleValid && descriptionValid) {
+      this.setState({inEditMode: false})
+    }
+
+    this.props.onSubmit(event)
   }
 
   onCancelBtnClick (event) {
     event.preventDefault()
-    this.setState({inEditMode: false})
+
+    this.setState({
+      title: '',
+      url: '',
+      description: '',
+      inEditMode: false
+    })
+
+    this.props.onCancel(event)
   }
 
   render () {
@@ -48,39 +74,30 @@ class Item extends React.Component {
     if (this.state.inEditMode) {
       content =
         <form>
-          <div className="form-group">
-            <label htmlFor="title">
-              Title
-              <abbr title="required">*</abbr>
-            </label>
-            <input type="text"
-                   className="form-control"
-                   id="title"
-                   placeholder="?"
-                   value={this.state.title}
-                   onChange={this.onTitleInput} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="url">Ticket URL</label>
-            <input type="text"
-                   className="form-control"
-                   id="url"
-                   placeholder="?"
-                   value={this.state.url}
-                   onChange={this.onUrlInput} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">
-              Description
-              <abbr title="required">*</abbr>
-            </label>
-            <textarea className="form-control"
-                      id="description"
-                      placeholder="?"
-                      rows="5"
-                      value={this.state.description}
-                      onChange={this.onDescriptionInput} />
-          </div>
+          <Input id="title"
+                 required={true}
+                 label="Title"
+                 placeholder="?"
+                 value={this.state.title}
+                 error={this.state.titleError}
+                 onChange={this.onTitleChange} />
+
+          <Input id="url"
+                 required={false}
+                 label="Ticket URL"
+                 placeholder="?"
+                 value={this.state.url}
+                 onChange={this.onUrlChange} />
+
+          <Input id="description"
+                 type="text"
+                 required={true}
+                 label="Description"
+                 placeholder="?"
+                 value={this.state.description}
+                 error={this.state.descriptionError}
+                 onChange={this.onDescriptionChange}/>
+
           <div className="form-group">
             <input type="submit" value="Add" className="btn btn-primary" onClick={this.onSubmitBtnClick} />
             &nbsp;

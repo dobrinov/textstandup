@@ -13,11 +13,35 @@ class Section extends React.Component {
     }
 
     this.onNewItemBtnClick = this.onNewItemBtnClick.bind(this)
+    this.onItemSubmit = this.onItemSubmit.bind(this)
+    this.onItemCancel = this.onItemCancel.bind(this)
   }
 
   onNewItemBtnClick(event) {
     event.preventDefault()
-    alert('show new item form')
+
+    const newItem =
+      {
+        id: 'draft',
+        title: '',
+        url: '',
+        description: '',
+        persisted: false,
+        editable: true,
+        inEditMode: true,
+      }
+
+    this.setState({
+      items: [...this.state.items, newItem],
+    })
+  }
+
+  onItemSubmit(event) {
+    alert('ok')
+  }
+
+  onItemCancel(event) {
+    alert('ok')
   }
 
   componentDidMount() {
@@ -35,7 +59,14 @@ class Section extends React.Component {
   render() {
     const items =
       this.state.items.map((item) =>
-        <Item key={item.id} title={item.title} url={item.url} description={item.description} />
+        <Item key={item.id}
+              title={item.title}
+              url={item.url}
+              description={item.description}
+              editable={item.editable}
+              inEditMode={item.inEditMode}
+              onSubmit={this.onItemSubmit}
+              onCancel={this.onItemCancel} />
       )
 
     let newItemBtn
